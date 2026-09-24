@@ -89,3 +89,18 @@ Characters · Animation · VFX · Shaders · Audio · Haptics · Cinematic event
 - Product name: **New Master**
 
 > The repository is an active development foundation. Unity Editor compilation, Play Mode, device testing and Android player-build validation must still be executed before release readiness can be claimed.
+
+## Foundation status
+
+The current repository foundation includes:
+
+- EN/PL localization architecture with stable keys and structured runtime messages;
+- persisted language selection and a TMP language selector component;
+- migration of legacy player-facing status strings;
+- local save for core, village and collection progression;
+- mobile lifecycle save/restore hooks;
+- safer temporary-file save writes with a platform fallback;
+- Android safe-area UI component;
+- deterministic EditMode coverage for key localization, status migration and settings contracts.
+
+Unity Locale and String Table assets still require creation/import in the Unity Editor. Unity Editor compilation, Play Mode and Android device validation are not claimed from repository-only work.
