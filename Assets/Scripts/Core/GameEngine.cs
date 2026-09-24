@@ -56,6 +56,7 @@ namespace NewMaster.Core
         }
 
         private readonly System.Random rng = new();
+        private readonly EconomyService economy = new();
         private readonly ProgressionService progression = new();
         private readonly VillageService village = new();
         private readonly LocalSaveService saveService = new();
@@ -141,8 +142,8 @@ namespace NewMaster.Core
             var outcome = SpinRules.Resolve(slots, baseReward, world == null ? 1 : world.energyReward);
 
             state.Slots = new List<string>(slots);
-            state.Coins += outcome.Coins;
-            state.Energy += outcome.Energy;
+            economy.GrantCoins(state, outcome.Coins);
+            economy.GrantEnergy(state, outcome.Energy);
             state.SpinsWon += outcome.Type == SpinOutcomeType.Nothing ? 0 : 1;
 
             if (outcome.VillageProgress > 0)
