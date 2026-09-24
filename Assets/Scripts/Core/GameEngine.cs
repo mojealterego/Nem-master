@@ -17,6 +17,9 @@ namespace NewMaster.Core
         [SerializeField] private VillageState villageState = new();
         [SerializeField] private CollectionState collectionState = new();
         [SerializeField] private float spinDuration = 0.8f;
+        [SerializeField, Min(5f)] private float autoSaveIntervalSeconds = 30f;
+
+        private Coroutine autoSaveCoroutine;
 
         public GameState State => state;
         public VillageState VillageState => villageState;
@@ -61,6 +64,17 @@ namespace NewMaster.Core
         {
             if (!LoadProgress())
                 Publish();
+
+            autoSaveCoroutine = StartCoroutine(AutoSaveRoutine());
+        }
+
+        private void OnDestroy()
+        {
+            if (autoSaveCoroutine != null)
+            {
+                StopCoroutine(autoSaveCoroutine);
+                autoSaveCoroutine = null;
+            }
         }
 
         private void OnApplicationPause(bool paused)
