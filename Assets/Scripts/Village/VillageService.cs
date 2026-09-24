@@ -3,8 +3,9 @@ using NewMaster.Localization;
 
 namespace NewMaster.Village
 {
-        private readonly EconomyService economy = new();
     public sealed class VillageService
+    {
+        private readonly EconomyService economy = new();
     {
         public bool TryUpgrade(
             GameState gameState,
