@@ -75,7 +75,7 @@ namespace NewMaster.UI
                 villageText.text = NewMasterLocalization.Get(NewMasterTextKeys.VillageLabel, state.CurrentVillageLevel);
 
             if (statusText != null)
-                statusText.text = NewMasterLocalization.Get(state.StatusMessage);
+                statusText.text = NewMasterLocalization.Get(state.Status);
 
             if (slotTexts == null)
                 return;
