@@ -289,6 +289,7 @@ namespace NewMaster.Core
         {
             state ??= new GameState();
             state.BattlePass ??= new BattlePassState();
+            state.BattlePass.Normalize(int.MaxValue);
             state.Session ??= new GameSessionState();
             villageState ??= new VillageState();
             collectionState ??= new CollectionState();
