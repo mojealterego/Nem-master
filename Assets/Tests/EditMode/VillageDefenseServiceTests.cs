@@ -1,45 +1,52 @@
 using NUnit.Framework;
-using UnityEngine;
-using NewMaster.Core;
 using NewMaster.Village;
 
-namespace NewMaster.Tests
+namespace NewMaster.Tests.EditMode
 {
     public sealed class VillageDefenseServiceTests
     {
         [Test]
-        public void DamageCanBeAppliedAndRepaired()
+        public void DefenseScoreUsesLevelAndDamage()
         {
-            var state = new GameState { Coins = 1000 };
             var village = new VillageState();
-            var building = ScriptableObject.CreateInstance<BuildingDefinition>();
-            building.buildingId = 1;
-
-            try
+            village.Buildings.Add(new VillageState.BuildingProgress
             {
-                var service = new VillageDefenseService();
+                BuildingId = 1,
+                Level = 3,
+                Damage = 50,
+                HasDefense = true
+            });
 
-                Assert.That(service.ApplyDamage(village, 1, 3), Is.True);
-                Assert.That(village.GetDamage(1), Is.EqualTo(3));
-                Assert.That(service.TryRepair(state, village, building, 100), Is.True);
-                Assert.That(village.GetDamage(1), Is.EqualTo(0));
-                Assert.That(state.Coins, Is.EqualTo(900));
-            }
-            finally
-            {
-                Object.DestroyImmediate(building);
-            }
+            Assert.AreEqual(250, new VillageDefenseService().GetDefenseScore(village));
         }
 
         [Test]
-        public void DamageSaturatesInsteadOfOverflowing()
+        public void RaidDamageOnlyHitsDefendedBuildings()
         {
             var village = new VillageState();
-            var service = new VillageDefenseService();
+            village.Buildings.Add(new VillageState.BuildingProgress
+            {
+                BuildingId = 1,
+                Level = 2,
+                HasDefense = false
+            });
+            village.Buildings.Add(new VillageState.BuildingProgress
+            {
+                BuildingId = 2,
+                Level = 2,
+                HasDefense = true
+            });
 
-            Assert.That(service.ApplyDamage(village, 1, int.MaxValue), Is.True);
-            Assert.That(service.ApplyDamage(village, 1, 1), Is.False);
-            Assert.That(village.GetDamage(1), Is.EqualTo(int.MaxValue));
+            Assert.AreEqual(75, new VillageDefenseService().ApplyRaidDamage(village, 75));
+            Assert.AreEqual(0, village.GetDamage(1));
+            Assert.AreEqual(75, village.GetDamage(2));
+        }
+
+        [Test]
+        public void NegativeDamageIsRejected()
+        {
+            var village = new VillageState();
+            Assert.AreEqual(0, new VillageDefenseService().ApplyRaidDamage(village, -10));
         }
     }
 }
