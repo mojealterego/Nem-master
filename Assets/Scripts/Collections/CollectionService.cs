@@ -10,6 +10,9 @@ namespace NewMaster.Collections
             if (set == null || state == null || gameState == null)
                 return false;
 
+            if (string.IsNullOrWhiteSpace(set.Id) || state.HasCompleted(set.Id))
+                return false;
+
             if (set.RequiredCards == null || set.RequiredCards.Count == 0)
                 return false;
 
@@ -19,6 +22,7 @@ namespace NewMaster.Collections
                     return false;
             }
 
+            state.CompletedSetIds.Add(set.Id);
             gameState.Coins += set.CompletionReward;
             gameState.StatusMessage = $"Kolekcja ukończona: {set.DisplayName}";
             return true;
