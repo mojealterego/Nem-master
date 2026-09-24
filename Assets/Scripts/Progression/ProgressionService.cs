@@ -6,16 +6,20 @@ namespace NewMaster.Progression
 {
     public sealed class ProgressionService
     {
+        private readonly EconomyService economy = new();
+
         public bool TryUnlockNextWorld(GameState state, WorldCatalog catalog)
         {
             if (state == null || catalog == null)
                 return false;
 
             var next = catalog.Find(state.CurrentWorldId + 1);
-            if (next == null || state.Coins < next.unlockCost)
+            if (next == null)
                 return false;
 
-            state.Coins -= next.unlockCost;
+            if (!economy.TrySpendCoins(state, next.unlockCost))
+                return false;
+
             state.CurrentWorldId = next.id;
             state.CurrentVillageLevel = 1;
             state.Status.Set(NewMasterTextKeys.NewWorld, next.id, 0, next.localizationKey);
