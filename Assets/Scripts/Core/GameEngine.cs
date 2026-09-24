@@ -20,6 +20,7 @@ namespace NewMaster.Core
         [SerializeField, Min(5f)] private float autoSaveIntervalSeconds = 30f;
 
         private Coroutine autoSaveCoroutine;
+        private WorldCatalog runtimeWorldCatalog;
 
         public GameState State => state;
         public VillageState VillageState => villageState;
@@ -61,6 +62,15 @@ namespace NewMaster.Core
         private readonly VillageService village = new();
         private readonly LocalSaveService saveService = new();
 
+        private void Awake()
+        {
+            if (worldCatalog == null)
+            {
+                runtimeWorldCatalog = WorldCatalog.CreateRuntimeFallback();
+                worldCatalog = runtimeWorldCatalog;
+            }
+        }
+
         private void Start()
         {
             if (!LoadProgress())
@@ -75,6 +85,12 @@ namespace NewMaster.Core
             {
                 StopCoroutine(autoSaveCoroutine);
                 autoSaveCoroutine = null;
+            }
+
+            if (runtimeWorldCatalog != null)
+            {
+                Destroy(runtimeWorldCatalog);
+                runtimeWorldCatalog = null;
             }
         }
 
