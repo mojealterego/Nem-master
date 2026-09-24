@@ -26,8 +26,8 @@ namespace NewMaster.Raids
 
             if (result.Loot > 0)
             {
-                economy.GrantCoins(gameState, result.Loot);
-                gameState.Status.Set(NewMasterTextKeys.RaidLoot, result.Loot);
+                var granted = economy.GrantCoins(gameState, result.Loot);
+                gameState.Status.Set(NewMasterTextKeys.RaidLoot, granted);
             }
             else if (result.ShieldsConsumed > 0)
             {
