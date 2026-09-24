@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using NewMaster.Core;
 using NewMaster.LiveOps;
+using NewMaster.Localization;
 
 namespace NewMaster.UI
 {
@@ -112,7 +113,9 @@ namespace NewMaster.UI
                 progressService.ActivateEvent(state.LiveOps, eventId);
 
             if (eventText != null)
-                eventText.text = liveEvent == null ? "No active event" : liveEvent.localizationKey;
+                eventText.text = liveEvent == null
+                    ? NewMasterLocalization.Get(NewMasterTextKeys.LiveOpsNoEvent)
+                    : NewMasterLocalization.Get(liveEvent.localizationKey);
 
             if (missions == null)
                 return;
@@ -127,10 +130,13 @@ namespace NewMaster.UI
 
                 if (missionTexts != null && i < missionTexts.Length && missionTexts[i] != null)
                 {
-                    var status = progress.Claimed
-                        ? "CLAIMED"
-                        : $"{progress.Progress:N0}/{mission.target:N0}";
-                    missionTexts[i].text = $"{mission.localizationKey} · {status}";
+                    missionTexts[i].text = progress.Claimed
+                        ? NewMasterLocalization.Get(NewMasterTextKeys.LiveOpsMissionClaimed, NewMasterLocalization.Get(mission.localizationKey))
+                        : NewMasterLocalization.Get(
+                            NewMasterTextKeys.LiveOpsMissionProgress,
+                            NewMasterLocalization.Get(mission.localizationKey),
+                            progress.Progress,
+                            mission.target);
                 }
 
                 if (claimButtons != null && i < claimButtons.Length && claimButtons[i] != null)
