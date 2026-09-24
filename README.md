@@ -104,3 +104,22 @@ The current repository foundation includes:
 - deterministic EditMode coverage for key localization, status migration and settings contracts.
 
 Unity Locale and String Table assets still require creation/import in the Unity Editor. Unity Editor compilation, Play Mode and Android device validation are not claimed from repository-only work.
+
+## Expanded systems foundation
+
+The repository now also contains:
+
+- a centralized economy transaction service used by spin, village upgrades, raids and collection rewards;
+- deterministic tooling to generate and validate a 365-world content catalog;
+- 365 world localization keys in the translation source;
+- village damage, repair, defense and customization state/services;
+- collection support for pets and artifacts;
+- social friend/block state and service primitives;
+- LiveOps event definitions and UTC-window resolution;
+- monetization product definitions and store-gateway contract;
+- analytics event buffering;
+- an authoritative-online gateway contract;
+- haptics service integration with persisted settings;
+- a production boot-scene generator for the Unity Editor.
+
+These foundations are deliberately provider-agnostic. External authentication, backend authority, matchmaking, chat transport, Google Play Billing, advertising SDKs, analytics providers, remote Addressables hosting and final art/audio assets must be connected in their respective production environments.
