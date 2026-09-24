@@ -14,6 +14,8 @@ namespace NewMaster.Worlds
         [Min(0)] public long unlockCost;
         [Min(1)] public long baseSpinReward = 100;
         [Min(0)] public int energyReward = 1;
+        public string bossId;
+        public string seasonalTag;
         public Sprite background;
         public List<string> symbols = new() { "Coin", "Crown", "Chest", "Energy", "Hammer" };
     }
