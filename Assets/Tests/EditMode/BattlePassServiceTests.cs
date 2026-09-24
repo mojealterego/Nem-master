@@ -9,6 +9,17 @@ namespace NewMaster.Tests
     public sealed class BattlePassServiceTests
     {
         [Test]
+        public void ExperienceProgressionIsClamped()
+        {
+            var state = new BattlePassState { Experience = int.MaxValue - 5 };
+
+            var added = new BattlePassService().AddExperience(state, 100);
+
+            Assert.That(added, Is.EqualTo(5));
+            Assert.That(state.Experience, Is.EqualTo(int.MaxValue));
+        }
+
+        [Test]
         public void UnlockedTierCanBeClaimedOnce()
         {
             var definition = ScriptableObject.CreateInstance<BattlePassDefinition>();
