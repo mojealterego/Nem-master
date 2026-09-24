@@ -16,7 +16,7 @@ namespace NewMaster.Tests
                 var service = new LiveOpsService();
                 Assert.That(service.FindActive(
                     new[] { liveEvent },
-                    DateTime.UtcNow), Is.Not.Null);
+                    new DateTime(2026, 1, 2, 0, 0, 0, DateTimeKind.Utc)), Is.Not.Null);
             }
             finally
             {
