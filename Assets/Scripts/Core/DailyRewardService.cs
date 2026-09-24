@@ -44,7 +44,11 @@ namespace NewMaster.Core
                 if (daysSinceClaim < 1)
                     return new DailyRewardPreview(false, rewardState.StreakDay, 0, 0, rewardState.StreakDay);
 
-                var nextDay = daysSinceClaim > 1 ? 1 : Math.Min(7, rewardState.StreakDay + 1);
+                var nextDay = daysSinceClaim > 1
+                    ? 1
+                    : rewardState.StreakDay >= 7
+                        ? 1
+                        : rewardState.StreakDay + 1;
                 return CreatePreview(nextDay, rewardState.StreakDay);
             }
 
