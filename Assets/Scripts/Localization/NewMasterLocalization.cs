@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine.Localization.Settings;
+using UnityEngine.Localization;
 
 namespace NewMaster.Localization
 {
@@ -28,6 +29,9 @@ namespace NewMaster.Localization
 
         public static string Get(string key, params object[] args)
         {
+            if (!LocalizationSettings.InitializationOperation.IsDone)
+                return FallbackEnglish.TryGetValue(key, out var pendingFallback) ? string.Format(pendingFallback, args) : key;
+
             var localized = LocalizationSettings.StringDatabase.GetLocalizedString(key, args);
 
             if (!string.IsNullOrEmpty(localized))
