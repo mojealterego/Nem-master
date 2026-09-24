@@ -66,9 +66,16 @@ namespace NewMaster.Localization
 
         private static string GetFallback(string key, object[] args)
         {
-            return FallbackEnglish.TryGetValue(key, out var fallback)
-                ? string.Format(System.Globalization.CultureInfo.InvariantCulture, fallback, args)
-                : key;
+            if (FallbackEnglish.TryGetValue(key, out var fallback))
+                return string.Format(System.Globalization.CultureInfo.InvariantCulture, fallback, args);
+
+            if (key.StartsWith("world.", System.StringComparison.OrdinalIgnoreCase) &&
+                int.TryParse(key.Substring("world.".Length), out var worldId))
+            {
+                return $"World {worldId:000}";
+            }
+
+            return key;
         }
     }
 }
