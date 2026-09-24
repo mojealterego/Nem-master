@@ -43,6 +43,7 @@ namespace NewMaster.Core
             state.CurrentVillageLevel = System.Math.Max(1, state.CurrentVillageLevel);
             state.Slots ??= new System.Collections.Generic.List<string> { "?", "?", "?" };
             state.BattlePass ??= new BattlePassState();
+            state.BattlePass.Normalize(int.MaxValue);
             state.Session.Normalize();
             state.DailyReward ??= new DailyRewardState();
             state.DailyReward.Normalize();
