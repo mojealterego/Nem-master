@@ -394,3 +394,7 @@ world.365,World 365,Świat 365
 liveops.no_event,No active event,Brak aktywnego wydarzenia
 liveops.mission_progress,{0} · {1:N0}/{2:N0},{0} · {1:N0}/{2:N0}
 liveops.mission_claimed,{0} · CLAIMED,{0} · ODEBRANO
+event.starter,Starter Event,Wydarzenie startowe
+mission.spin_50,Spin 50 times,Zakręć 50 razy
+mission.spin_250,Spin 250 times,Zakręć 250 razy
+mission.jackpot_10,Hit 10 jackpots,Zdobądź 10 jackpotów
