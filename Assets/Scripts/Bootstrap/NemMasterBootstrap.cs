@@ -1,9 +1,9 @@
 using UnityEngine;
-using NemMaster.Core;
+using NewMaster.Core;
 
-namespace NemMaster.Bootstrap
+namespace NewMaster.Bootstrap
 {
-    public sealed class NemMasterBootstrap : MonoBehaviour
+    public sealed class NewMasterBootstrap : MonoBehaviour
     {
         [SerializeField] private GameEngine gameEngine;
 
