@@ -14,6 +14,8 @@ namespace NewMaster.Core
         public int CurrentWorldId = 1;
         public int CurrentVillageLevel = 1;
         public int SpinsWon;
+        public int SpinStreak;
+        public int BestSpinStreak;
         public int RaidTokens = 1;
         public bool IsSpinning;
         public GameStatus Status = new();
