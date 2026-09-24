@@ -41,6 +41,8 @@ namespace NewMaster.Core
             state.Slots ??= new System.Collections.Generic.List<string> { "?", "?", "?" };
             state.BattlePass ??= new BattlePassState();
             state.Session.Normalize();
+            state.DailyReward ??= new DailyRewardState();
+            state.DailyReward.Normalize();
 
             if (string.IsNullOrWhiteSpace(state.Status.Key))
                 state.Status.Set(NewMaster.Localization.NewMasterTextKeys.GameReady);
