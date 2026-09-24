@@ -36,6 +36,9 @@ namespace NewMaster.Core
             }
 
             state.Energy = System.Math.Max(0, state.Energy);
+            state.SpinsWon = System.Math.Max(0, state.SpinsWon);
+            state.SpinStreak = System.Math.Max(0, state.SpinStreak);
+            state.BestSpinStreak = System.Math.Max(state.SpinStreak, System.Math.Max(0, state.BestSpinStreak));
             state.CurrentWorldId = System.Math.Max(1, state.CurrentWorldId);
             state.CurrentVillageLevel = System.Math.Max(1, state.CurrentVillageLevel);
             state.Slots ??= new System.Collections.Generic.List<string> { "?", "?", "?" };
