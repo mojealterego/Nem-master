@@ -46,6 +46,21 @@ namespace NewMaster.Tests
         }
 
         [Test]
+        public void SevenDayCycleRestartsAtDayOne()
+        {
+            var state = new GameState();
+            var service = new DailyRewardService();
+            var first = new DateTimeOffset(2026, 9, 25, 12, 0, 0, TimeSpan.Zero);
+
+            for (var day = 0; day < 7; day++)
+                Assert.That(service.TryClaim(state, first.AddDays(day)), Is.True);
+
+            Assert.That(state.DailyReward.StreakDay, Is.EqualTo(7));
+            Assert.That(service.TryClaim(state, first.AddDays(7)), Is.True);
+            Assert.That(state.DailyReward.StreakDay, Is.EqualTo(1));
+        }
+
+        [Test]
         public void ConsecutiveClaimAdvancesStreak()
         {
             var state = new GameState();
