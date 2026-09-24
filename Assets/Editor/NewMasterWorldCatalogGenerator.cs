@@ -39,6 +39,8 @@ namespace NewMaster.Editor
                 world.unlockCost = id == 1 ? 0 : CalculateUnlockCost(id);
                 world.baseSpinReward = CalculateBaseReward(id);
                 world.energyReward = id % 15 == 0 ? 2 : 1;
+                world.bossId = id % 10 == 0 ? $"boss.{id:000}" : string.Empty;
+                world.seasonalTag = id % 20 == 0 ? "seasonal" : string.Empty;
                 world.themeColor = Color.HSVToRGB(Mathf.Repeat((id - 1) * 0.073f, 1f), 0.42f, 0.92f);
                 world.symbols = CreateSymbols(id);
 
