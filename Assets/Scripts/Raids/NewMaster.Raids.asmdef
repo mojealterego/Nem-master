@@ -1,0 +1,15 @@
+{
+  "name": "NewMaster.Raids",
+  "rootNamespace": "NewMaster.Raids",
+  "references": [
+    "NewMaster.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
