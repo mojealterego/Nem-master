@@ -5,6 +5,7 @@ using UnityEngine;
 using NewMaster.Progression;
 using NewMaster.Village;
 using NewMaster.Worlds;
+using NewMaster.Persistence;
 
 namespace NewMaster.Core
 {
@@ -19,9 +20,23 @@ namespace NewMaster.Core
         public VillageState VillageState => villageState;
         public event Action<GameState> StateChanged;
 
+        public void SaveProgress() => saveService.Save(state, GameState.CurrentVersion);
+
+        public bool LoadProgress()
+        {
+            if (!saveService.TryLoad<GameState>(out var loaded))
+                return false;
+
+            state = loaded;
+            state.IsSpinning = false;
+            Publish();
+            return true;
+        }
+
         private readonly System.Random rng = new();
         private readonly ProgressionService progression = new();
         private readonly VillageService village = new();
+        private readonly LocalSaveService saveService = new();
 
         public void Spin()
         {
