@@ -19,7 +19,11 @@ namespace NewMaster.Core
         public VillageState VillageState => villageState;
         public event Action<GameState> StateChanged;
 
-        public void SaveProgress() => saveService.Save(state, GameState.CurrentVersion);
+        public void SaveProgress()
+        {
+            saveService.Save(state, GameState.CurrentVersion);
+            saveService.SaveVillage(villageState, GameState.CurrentVersion);
+        }
 
         public bool LoadProgress()
         {
@@ -28,6 +32,11 @@ namespace NewMaster.Core
 
             state = loaded;
             state.IsSpinning = false;
+
+            if (!saveService.TryLoadVillage<VillageState>(out var loadedVillage))
+                loadedVillage = new VillageState();
+
+            villageState = loadedVillage;
             Publish();
             return true;
         }
