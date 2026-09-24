@@ -1,3 +1,5 @@
+using System;
+
 namespace NewMaster.Core
 {
     public sealed class EconomyService
@@ -16,8 +18,12 @@ namespace NewMaster.Core
             if (state == null || amount <= 0)
                 return 0;
 
-            state.Coins += amount;
-            return amount;
+            var granted = Math.Min(amount, long.MaxValue - state.Coins);
+            if (granted <= 0)
+                return 0;
+
+            state.Coins += granted;
+            return granted;
         }
 
         public int GrantEnergy(GameState state, int amount)
@@ -25,8 +31,12 @@ namespace NewMaster.Core
             if (state == null || amount <= 0)
                 return 0;
 
-            state.Energy += amount;
-            return amount;
+            var granted = Math.Min(amount, int.MaxValue - state.Energy);
+            if (granted <= 0)
+                return 0;
+
+            state.Energy += granted;
+            return granted;
         }
     }
 }
