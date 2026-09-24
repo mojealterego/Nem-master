@@ -36,6 +36,7 @@ namespace NewMaster.Core
         private readonly EconomyService economy = new();
         private readonly ProgressionService progression = new();
         private readonly VillageService village = new();
+        private readonly VillageDefenseService villageDefense = new();
         private readonly LocalSaveService saveService = new();
         private readonly WorldRuleService worldRules = new();
         private readonly DailyRewardService dailyRewards = new();
@@ -158,6 +159,37 @@ namespace NewMaster.Core
             }
 
             return upgraded;
+        }
+
+        public int GetVillageDefenseScore()
+        {
+            EnsureState();
+            villageState.Normalize();
+            return villageDefense.GetDefenseScore(villageState);
+        }
+
+        public int ApplyRaidDamageToVillage(int damage)
+        {
+            EnsureState();
+            var applied = villageDefense.ApplyRaidDamage(villageState, damage);
+            if (applied > 0)
+            {
+                state.Status.Set("village.raid_damage", applied);
+                Publish();
+            }
+
+            return applied;
+        }
+
+        public bool TryRepairBuilding(int buildingId, long repairCost)
+        {
+            EnsureState();
+            var building = new BuildingDefinition { buildingId = buildingId };
+            var repaired = villageDefense.TryRepair(state, villageState, building, repairCost);
+            if (repaired)
+                Publish();
+
+            return repaired;
         }
 
         public void NotifyStateChanged() => Publish();
