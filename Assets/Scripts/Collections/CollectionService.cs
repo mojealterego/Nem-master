@@ -3,8 +3,9 @@ using NewMaster.Localization;
 
 namespace NewMaster.Collections
 {
-        private readonly EconomyService economy = new();
     public sealed class CollectionService
+    {
+        private readonly EconomyService economy = new();
     {
         public bool TryComplete(CollectionSet set, CollectionState state, GameState gameState)
         {
