@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NewMaster.Localization;
 using NewMaster.Collections;
+using NewMaster.Monetization;
 using NewMaster.Progression;
 using NewMaster.Village;
 using NewMaster.Worlds;
@@ -18,6 +19,7 @@ namespace NewMaster.Core
         [SerializeField] private CollectionState collectionState = new();
         [SerializeField, Min(0f)] private float spinDuration = 0.8f;
         [SerializeField, Min(5f)] private float autoSaveIntervalSeconds = 30f;
+        [SerializeField, Min(0)] private int battlePassXpPerSpin = 10;
 
         private Coroutine autoSaveCoroutine;
         private WorldCatalog runtimeWorldCatalog;
@@ -34,6 +36,7 @@ namespace NewMaster.Core
         private readonly LocalSaveService saveService = new();
         private readonly WorldRuleService worldRules = new();
         private readonly DailyRewardService dailyRewards = new();
+        private readonly BattlePassService battlePass = new();
 
         public void SaveProgress()
         {
@@ -221,6 +224,7 @@ namespace NewMaster.Core
 
             var grantedCoins = economy.GrantCoins(state, outcome.Coins);
             economy.GrantEnergy(state, outcome.Energy);
+            battlePass.AddExperience(state.BattlePass, battlePassXpPerSpin);
 
             if (outcome.Type != SpinOutcomeType.Nothing && state.SpinsWon < int.MaxValue)
                 state.SpinsWon++;
