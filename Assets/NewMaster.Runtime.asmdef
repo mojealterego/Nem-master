@@ -1,7 +1,11 @@
 {
   "name": "NewMaster.Runtime",
   "rootNamespace": "NewMaster",
-  "references": [],
+  "references": [
+    "Unity.InputSystem",
+    "Unity.Localization",
+    "Unity.TextMeshPro"
+  ],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
