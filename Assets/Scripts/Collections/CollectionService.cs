@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using NewMaster.Core;
+using NewMaster.Localization;
 
 namespace NewMaster.Collections
 {
@@ -24,7 +24,7 @@ namespace NewMaster.Collections
 
             state.CompletedSetIds.Add(set.Id);
             gameState.Coins += set.CompletionReward;
-            gameState.StatusMessage = $"Kolekcja ukończona: {set.DisplayName}";
+            gameState.Status.Set(NewMasterTextKeys.CollectionComplete, set.CompletionReward);
             return true;
         }
 
