@@ -6,10 +6,16 @@ namespace NewMaster.Village
     {
         public bool TryRepair(GameState state, VillageState village, BuildingDefinition building, long repairCost)
         {
-            if (state == null || village == null || building == null || repairCost < 0)
+            return building != null &&
+                   TryRepair(state, village, building.buildingId, repairCost);
+        }
+
+        public bool TryRepair(GameState state, VillageState village, int buildingId, long repairCost)
+        {
+            if (state == null || village == null || buildingId <= 0 || repairCost < 0)
                 return false;
 
-            var progress = Find(village, building.buildingId);
+            var progress = Find(village, buildingId);
             if (progress == null || progress.Damage <= 0)
                 return false;
 
