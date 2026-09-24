@@ -39,5 +39,22 @@ namespace NewMaster.Tests
             Assert.That(state.CurrentVillageLevel, Is.EqualTo(1));
             Assert.That(state.Slots, Is.Not.Null);
         }
+        [Test]
+        public void VersionTwoPolishStatusMigratesToStableLocalizationKey()
+        {
+            var state = new GameState
+            {
+                Version = 2,
+                Status = null,
+                StatusMessage = "Postęp wioski +1"
+            };
+
+            GameStateMigrations.Normalize(state);
+
+            Assert.That(state.Version, Is.EqualTo(GameState.CurrentVersion));
+            Assert.That(state.Status.Key, Is.EqualTo(NewMaster.Localization.NewMasterTextKeys.VillageProgress));
+            Assert.That(state.StatusMessage, Is.Null);
+        }
+
     }
 }
