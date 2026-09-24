@@ -32,6 +32,9 @@ namespace NewMaster.Localization
             [NewMasterTextKeys.RaidShieldsLabel] = "Shields: {0}",
             [NewMasterTextKeys.CollectionCards] = "{0}/{1} cards",
             [NewMasterTextKeys.CollectionReward] = "Reward: {0:N0} coins",
+            [NewMasterTextKeys.LiveOpsNoEvent] = "No active event",
+            [NewMasterTextKeys.LiveOpsMissionProgress] = "{0} · {1:N0}/{2:N0}",
+            [NewMasterTextKeys.LiveOpsMissionClaimed] = "{0} · CLAIMED",
             ["world.001"] = "World 001",
             ["building.main"] = "Main Building"
         };
