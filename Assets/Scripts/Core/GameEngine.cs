@@ -41,6 +41,7 @@ namespace NewMaster.Core
         private readonly DailyRewardService dailyRewards = new();
         private readonly BattlePassProgressionService battlePass = new();
         private readonly MasteryService mastery = new();
+        private readonly MasteryPerkService masteryPerks = new();
         private readonly LiveOpsProgressService liveOps = new();
 
         public void SaveProgress()
@@ -227,8 +228,13 @@ namespace NewMaster.Core
 
             state.Slots = new List<string>(slots);
 
-            var grantedCoins = economy.GrantCoins(state, outcome.Coins);
-            economy.GrantEnergy(state, outcome.Energy);
+            var masteryRank = mastery.GetRank(state.Mastery.Experience);
+            var masteryAdjustedCoins = masteryPerks.ApplyCoinBonus(outcome.Coins, masteryRank);
+            var masteryEnergyBonus = outcome.Energy > 0
+                ? masteryPerks.GetEnergyRewardBonus(masteryRank)
+                : 0;
+            var grantedCoins = economy.GrantCoins(state, masteryAdjustedCoins);
+            economy.GrantEnergy(state, AddClamped(outcome.Energy, masteryEnergyBonus));
             battlePass.AddExperience(state.BattlePass, battlePassXpPerSpin);
             liveOps.AddProgress(state.LiveOps, "spin.50", 1, 50);
             liveOps.AddProgress(state.LiveOps, "spin.250", 1, 250);
