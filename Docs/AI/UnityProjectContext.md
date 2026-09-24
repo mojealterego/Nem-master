@@ -19,7 +19,7 @@
 - `Assets/Scripts/Worlds`: world definitions and scalable world catalog.
 - `Assets/Scripts/Progression`: world progression rules.
 - `Assets/Scripts/Village`: building data, village state and upgrade rules.
-- `Assets/Scripts/Bootstrap`: New Master composition/bootstrap entry point.
+- `Assets/Scripts/Bootstrap`: New Master composition/bootstrap entry point and mobile Input System UI bootstrap.
 - `Assets/Tests/EditMode`: deterministic gameplay tests.
 - Runtime assembly: `NewMaster.Runtime`.
 - Test assembly: `NewMaster.Tests.EditMode`.
