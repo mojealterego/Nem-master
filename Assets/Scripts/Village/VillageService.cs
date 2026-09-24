@@ -39,9 +39,19 @@ namespace NewMaster.Village
             if (building == null)
                 return 0;
 
-            var cost = building.baseUpgradeCost;
+            var cost = System.Math.Max(0L, building.baseUpgradeCost);
+            var growth = System.Math.Max(1f, building.costGrowth);
+
             for (var level = 1; level < currentLevel; level++)
-                cost = (long)(cost * building.costGrowth);
+            {
+                if (cost >= long.MaxValue)
+                    return long.MaxValue;
+
+                var next = cost * (double)growth;
+                cost = next >= long.MaxValue
+                    ? long.MaxValue
+                    : (long)next;
+            }
 
             return cost;
         }
