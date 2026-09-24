@@ -28,6 +28,8 @@
 The runtime no longer uses player-facing Polish status strings as gameplay state. GameStatus stores a stable localization key plus typed numeric arguments, with migration support from the previous save format. English and Polish translation source is maintained in `Docs/Localization/NewMaster_UI.csv`. The Unity String Table named `New Master UI` still needs to be created/imported in the Editor.
 
 ## Gameplay foundation
+The current runtime foundation also includes persisted language/settings, collection persistence, mobile lifecycle save hooks and an Android safe-area UI component.
+
 The current vertical foundation establishes:
 1. energy-gated spin;
 2. typed spin outcomes;
