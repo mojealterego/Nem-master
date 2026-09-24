@@ -390,3 +390,7 @@ world.362,World 362,Świat 362
 world.363,World 363,Świat 363
 world.364,World 364,Świat 364
 world.365,World 365,Świat 365
+
+liveops.no_event,No active event,Brak aktywnego wydarzenia
+liveops.mission_progress,{0} · {1:N0}/{2:N0},{0} · {1:N0}/{2:N0}
+liveops.mission_claimed,{0} · CLAIMED,{0} · ODEBRANO
