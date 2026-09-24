@@ -14,6 +14,9 @@ namespace NewMaster.Bootstrap
 
             if (gameEngine == null)
                 gameEngine = gameObject.AddComponent<GameEngine>();
+
+            if (GetComponent<NewMasterInputBootstrap>() == null)
+                gameObject.AddComponent<NewMasterInputBootstrap>();
         }
     }
 }
