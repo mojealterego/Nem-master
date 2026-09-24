@@ -102,6 +102,17 @@ def validate_asmdefs() -> None:
                 )
 
 
+def validate_source_metadata() -> None:
+    """Every first-party C# source file must have a stable Unity .meta file."""
+    for path in ROOT.glob("Assets/**/*.cs"):
+        if "Library" in path.parts or "Temp" in path.parts:
+            continue
+
+        meta = Path(str(path) + ".meta")
+        if not meta.is_file():
+            ERRORS.append(f"{path}: missing Unity metadata file {meta}")
+
+
 def validate_source_roots() -> None:
     for path in ROOT.glob("Assets/**/*.cs"):
         if "Library" in path.parts or "Temp" in path.parts:
@@ -112,6 +123,7 @@ def main() -> int:
     validate_project_version()
     validate_manifest()
     validate_asmdefs()
+    validate_source_metadata()
     validate_source_roots()
 
     if ERRORS:
