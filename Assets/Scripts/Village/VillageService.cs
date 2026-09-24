@@ -25,7 +25,7 @@ namespace NewMaster.Village
 
             var progress = FindOrCreate(villageState, building.buildingId);
             progress.Level++;
-            gameState.CurrentVillageLevel = progress.Level;
+            gameState.CurrentVillageLevel = CalculateVillageLevel(villageState);
             gameState.Status.Set(
                 NewMasterTextKeys.VillageUpgraded,
                 progress.Level,
@@ -44,6 +44,18 @@ namespace NewMaster.Village
                 cost = (long)(cost * building.costGrowth);
 
             return cost;
+        }
+
+        private static int CalculateVillageLevel(VillageState state)
+        {
+            var level = 1;
+            for (var i = 0; i < state.Buildings.Count; i++)
+            {
+                if (state.Buildings[i] != null)
+                    level = System.Math.Max(level, state.Buildings[i].Level);
+            }
+
+            return level;
         }
 
         private static VillageState.BuildingProgress FindOrCreate(VillageState state, int buildingId)
