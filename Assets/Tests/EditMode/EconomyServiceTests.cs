@@ -35,5 +35,23 @@ namespace NewMaster.Tests
             Assert.That(state.Coins, Is.EqualTo(100));
             Assert.That(state.Energy, Is.EqualTo(5));
         }
+
+        [Test]
+        public void GrantCoinsClampsAtLongMaxValue()
+        {
+            var state = new GameState { Coins = long.MaxValue - 10 };
+
+            Assert.That(new EconomyService().GrantCoins(state, 100), Is.EqualTo(10));
+            Assert.That(state.Coins, Is.EqualTo(long.MaxValue));
+        }
+
+        [Test]
+        public void GrantEnergyClampsAtIntMaxValue()
+        {
+            var state = new GameState { Energy = int.MaxValue - 2 };
+
+            Assert.That(new EconomyService().GrantEnergy(state, 100), Is.EqualTo(2));
+            Assert.That(state.Energy, Is.EqualTo(int.MaxValue));
+        }
     }
 }
