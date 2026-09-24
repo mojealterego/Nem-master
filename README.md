@@ -24,6 +24,8 @@ New Master is being built around these principles:
 - Data-driven world definitions and world catalog.
 - World unlock progression.
 - Village building definitions and upgrade progression.
+- Raid domain with shields, loot and attack-token resolution.
+- Collection domain with card ownership and set completion rewards.
 - Runtime assembly boundary.
 - EditMode gameplay tests.
 - New Master bootstrap entry point.
