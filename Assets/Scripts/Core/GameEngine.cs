@@ -288,6 +288,7 @@ namespace NewMaster.Core
         private void EnsureState()
         {
             state ??= new GameState();
+            state.BattlePass ??= new BattlePassState();
             state.Session ??= new GameSessionState();
             villageState ??= new VillageState();
             collectionState ??= new CollectionState();
