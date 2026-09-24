@@ -27,7 +27,9 @@ namespace NewMaster.UI
             if (controller == null)
                 yield break;
 
-            yield return null;
+            if (!controller.IsReady)
+                yield return new WaitUntil(() => controller.IsReady);
+
             RebuildOptions();
             controller.LanguageCodeChanged += HandleLanguageChanged;
             dropdown.onValueChanged.AddListener(SelectLanguage);
