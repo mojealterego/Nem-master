@@ -10,8 +10,10 @@ namespace NewMaster.UI
         [SerializeField] private TMP_Text rankText;
         [SerializeField] private TMP_Text progressText;
         [SerializeField] private TMP_Text milestoneText;
+        [SerializeField] private TMP_Text perkText;
 
         private readonly MasteryService service = new();
+        private readonly MasteryPerkService perks = new();
 
         private void Awake()
         {
@@ -56,6 +58,13 @@ namespace NewMaster.UI
 
             if (milestoneText != null)
                 milestoneText.text = $"Milestones {mastery.LifetimeMilestones:N0}";
+
+            if (perkText != null)
+            {
+                var coinBonus = perks.GetCoinBonusPercent(rank);
+                var energyBonus = perks.GetEnergyRewardBonus(rank);
+                perkText.text = $"Perks +{coinBonus}% coins · +{energyBonus} energy reward";
+            }
         }
     }
 }
