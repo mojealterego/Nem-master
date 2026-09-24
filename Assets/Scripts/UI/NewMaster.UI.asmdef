@@ -5,7 +5,8 @@
     "NewMaster.Runtime",
     "Unity.InputSystem",
     "NewMaster.Raids",
-    "NewMaster.Collections"
+    "NewMaster.Collections",
+    "Unity.Localization"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],
