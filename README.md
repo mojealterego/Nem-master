@@ -26,6 +26,8 @@ New Master is being built around these principles:
 - Village building definitions and upgrade progression.
 - Raid domain with shields, loot and attack-token resolution.
 - Collection domain with card ownership and set completion rewards.
+- Reusable raid and collection presentation panels.
+- Versioned save migration with separate village persistence.
 - Runtime assembly boundary.
 - EditMode gameplay tests.
 - New Master bootstrap entry point.
