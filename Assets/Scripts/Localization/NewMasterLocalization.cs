@@ -29,7 +29,9 @@ namespace NewMaster.Localization
             [NewMasterTextKeys.RaidLootLabel] = "Loot: {0:N0}",
             [NewMasterTextKeys.RaidShieldsLabel] = "Shields: {0}",
             [NewMasterTextKeys.CollectionCards] = "{0}/{1} cards",
-            [NewMasterTextKeys.CollectionReward] = "Reward: {0:N0} coins"
+            [NewMasterTextKeys.CollectionReward] = "Reward: {0:N0} coins",
+            ["world.001"] = "World 001",
+            ["building.main"] = "Main Building"
         };
 
         public static string Get(string key, params object[] args)
@@ -55,9 +57,9 @@ namespace NewMaster.Localization
             return status.Key switch
             {
                 NewMasterTextKeys.VillageUpgraded =>
-                    Get(status.Key, status.Amount, status.SecondaryValue),
+                    Get(status.Key, status.Amount, Get(status.Context)),
                 NewMasterTextKeys.NewWorld =>
-                    Get(status.Key, status.Amount),
+                    Get(status.Key, Get(status.Context)),
                 _ => Get(status.Key, status.Amount)
             };
         }
