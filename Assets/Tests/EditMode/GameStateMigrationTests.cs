@@ -40,6 +40,24 @@ namespace NewMaster.Tests
             Assert.That(state.Slots, Is.Not.Null);
         }
         [Test]
+        public void MigrationNormalizesBattlePassState()
+        {
+            var state = new GameState
+            {
+                BattlePass = new BattlePassState
+                {
+                    Experience = -50,
+                    ClaimedTier = int.MaxValue
+                }
+            };
+
+            GameStateMigrations.Normalize(state);
+
+            Assert.That(state.BattlePass.Experience, Is.EqualTo(0));
+            Assert.That(state.BattlePass.ClaimedTier, Is.EqualTo(int.MaxValue));
+        }
+
+        [Test]
         public void VersionTwoPolishStatusMigratesToStableLocalizationKey()
         {
             var state = new GameState
