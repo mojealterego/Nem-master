@@ -51,9 +51,21 @@ namespace NewMaster.Core
                 File.WriteAllText(temporaryPath, JsonUtility.ToJson(envelope));
 
                 if (File.Exists(path))
-                    File.Replace(temporaryPath, path, null);
+                {
+                    try
+                    {
+                        File.Replace(temporaryPath, path, null);
+                    }
+                    catch (PlatformNotSupportedException)
+                    {
+                        File.Delete(path);
+                        File.Move(temporaryPath, path);
+                    }
+                }
                 else
+                {
                     File.Move(temporaryPath, path);
+                }
             }
             catch (Exception exception)
             {
