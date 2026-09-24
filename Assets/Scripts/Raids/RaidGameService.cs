@@ -26,6 +26,9 @@ namespace NewMaster.Raids
 
             if (result.Loot > 0)
             {
+                if (gameState.Session != null && gameState.Session.RaidsThisSession < int.MaxValue)
+                    gameState.Session.RaidsThisSession++;
+
                 var granted = economy.GrantCoins(gameState, result.Loot);
                 gameState.Status.Set(NewMasterTextKeys.RaidLoot, granted);
             }
