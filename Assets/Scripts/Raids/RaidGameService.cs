@@ -3,6 +3,7 @@ using NewMaster.Localization;
 
 namespace NewMaster.Raids
 {
+        private readonly EconomyService economy = new();
     public sealed class RaidGameService
     {
         private readonly RaidService raidService = new();
@@ -25,7 +26,7 @@ namespace NewMaster.Raids
 
             if (result.Loot > 0)
             {
-                gameState.Coins += result.Loot;
+                economy.GrantCoins(gameState, result.Loot);
                 gameState.Status.Set(NewMasterTextKeys.RaidLoot, result.Loot);
             }
             else if (result.ShieldsConsumed > 0)
