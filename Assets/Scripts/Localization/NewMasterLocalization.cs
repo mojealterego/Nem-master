@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine.Localization.Settings;
-using UnityEngine.Localization;
+using NewMaster.Core;
 
 namespace NewMaster.Localization
 {
@@ -10,39 +10,63 @@ namespace NewMaster.Localization
         {
             [NewMasterTextKeys.GameReady] = "New Master ready.",
             [NewMasterTextKeys.NoReward] = "No reward. The next spin can change everything.",
-            [NewMasterTextKeys.CoinsReward] = "+{0} coins",
+            [NewMasterTextKeys.CoinsReward] = "+{0:N0} coins",
             [NewMasterTextKeys.EnergyReward] = "+{0} energy",
             [NewMasterTextKeys.VillageProgress] = "Village progress +1",
-            [NewMasterTextKeys.NewWorld] = "New world: {0}",
-            [NewMasterTextKeys.RaidLoot] = "+{0} loot",
+            [NewMasterTextKeys.NewWorld] = "New world: {0:000}",
+            [NewMasterTextKeys.VillageUpgraded] = "Building {1}: level {0}",
+            [NewMasterTextKeys.RaidLoot] = "+{0:N0} loot",
             [NewMasterTextKeys.RaidShieldBlocked] = "Raid blocked by a shield.",
             [NewMasterTextKeys.RaidNoToken] = "No attack token.",
             [NewMasterTextKeys.RaidEmptyTarget] = "Target has no available loot.",
-            [NewMasterTextKeys.CollectionComplete] = "Collection completed: +{0}",
+            [NewMasterTextKeys.CollectionComplete] = "Collection completed: +{0:N0}",
             [NewMasterTextKeys.CollectionIncomplete] = "Collection is not complete yet.",
             [NewMasterTextKeys.CoinsLabel] = "Coins",
             [NewMasterTextKeys.EnergyLabel] = "Energy",
             [NewMasterTextKeys.WorldLabel] = "World {0:000}",
             [NewMasterTextKeys.VillageLabel] = "Village {0}",
-            [NewMasterTextKeys.RaidTokensLabel] = "Attack tokens: {0}"
+            [NewMasterTextKeys.RaidTokensLabel] = "Attack tokens: {0}",
+            [NewMasterTextKeys.RaidLootLabel] = "Loot: {0:N0}",
+            [NewMasterTextKeys.RaidShieldsLabel] = "Shields: {0}",
+            [NewMasterTextKeys.CollectionCards] = "{0}/{1} cards",
+            [NewMasterTextKeys.CollectionReward] = "Reward: {0:N0} coins"
         };
 
         public static string Get(string key, params object[] args)
         {
+            if (string.IsNullOrWhiteSpace(key))
+                return string.Empty;
+
             if (!LocalizationSettings.InitializationOperation.IsDone)
-                return FallbackEnglish.TryGetValue(key, out var pendingFallback) ? string.Format(pendingFallback, args) : key;
+                return GetFallback(key, args);
 
             var localized = LocalizationSettings.StringDatabase.GetLocalizedString(key, args);
-
-            if (!string.IsNullOrEmpty(localized))
-                return localized;
-
-            return FallbackEnglish.TryGetValue(key, out var fallback)
-                ? string.Format(fallback, args)
-                : key;
+            return !string.IsNullOrEmpty(localized) ? localized : GetFallback(key, args);
         }
 
         public static string Get(LocalizationKey key, params object[] args) =>
             Get(key.Value, args);
+
+        public static string Get(GameStatus status)
+        {
+            if (status == null)
+                return Get(NewMasterTextKeys.GameReady);
+
+            return status.Key switch
+            {
+                NewMasterTextKeys.VillageUpgraded =>
+                    Get(status.Key, status.Amount, status.SecondaryValue),
+                NewMasterTextKeys.NewWorld =>
+                    Get(status.Key, status.Amount),
+                _ => Get(status.Key, status.Amount)
+            };
+        }
+
+        private static string GetFallback(string key, object[] args)
+        {
+            return FallbackEnglish.TryGetValue(key, out var fallback)
+                ? string.Format(System.Globalization.CultureInfo.InvariantCulture, fallback, args)
+                : key;
+        }
     }
 }
