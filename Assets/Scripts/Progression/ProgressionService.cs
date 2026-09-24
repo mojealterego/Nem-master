@@ -1,4 +1,5 @@
 using NewMaster.Core;
+using NewMaster.Localization;
 using NewMaster.Worlds;
 
 namespace NewMaster.Progression
@@ -17,7 +18,7 @@ namespace NewMaster.Progression
             state.Coins -= next.unlockCost;
             state.CurrentWorldId = next.id;
             state.CurrentVillageLevel = 1;
-            state.StatusMessage = $"Nowy świat: {next.worldName}";
+            state.Status.Set(NewMasterTextKeys.NewWorld, next.id, 0, next.localizationKey);
             return true;
         }
     }
