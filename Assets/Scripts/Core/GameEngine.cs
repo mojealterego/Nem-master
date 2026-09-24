@@ -184,8 +184,7 @@ namespace NewMaster.Core
         public bool TryRepairBuilding(int buildingId, long repairCost)
         {
             EnsureState();
-            var building = new BuildingDefinition { buildingId = buildingId };
-            var repaired = villageDefense.TryRepair(state, villageState, building, repairCost);
+            var repaired = villageDefense.TryRepair(state, villageState, buildingId, repairCost);
             if (repaired)
                 Publish();
 
