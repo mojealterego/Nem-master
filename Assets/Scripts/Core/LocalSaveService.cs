@@ -8,6 +8,7 @@ namespace NewMaster.Core
     {
         private const string FileName = "new_master_save.json";
         private const string VillageFileName = "new_master_village.json";
+        private const string CollectionsFileName = "new_master_collections.json";
 
         [Serializable]
         private sealed class SaveEnvelope
@@ -22,22 +23,43 @@ namespace NewMaster.Core
         public void SaveVillage<T>(T value, int version) =>
             Save(value, version, VillageFileName);
 
+        public void SaveCollections<T>(T value, int version) =>
+            Save(value, version, CollectionsFileName);
+
         public bool TryLoad<T>(out T value) =>
             TryLoad(out value, FileName);
 
         public bool TryLoadVillage<T>(out T value) =>
             TryLoad(out value, VillageFileName);
 
+        public bool TryLoadCollections<T>(out T value) =>
+            TryLoad(out value, CollectionsFileName);
+
         private static void Save<T>(T value, int version, string fileName)
         {
+            var path = GetPath(fileName);
+            var temporaryPath = path + ".tmp";
+
             var envelope = new SaveEnvelope
             {
                 Version = version,
                 Payload = JsonUtility.ToJson(value)
             };
 
-            var json = JsonUtility.ToJson(envelope);
-            File.WriteAllText(GetPath(fileName), json);
+            try
+            {
+                File.WriteAllText(temporaryPath, JsonUtility.ToJson(envelope));
+
+                if (File.Exists(path))
+                    File.Replace(temporaryPath, path, null);
+                else
+                    File.Move(temporaryPath, path);
+            }
+            catch (Exception exception)
+            {
+                TryDelete(temporaryPath);
+                Debug.LogWarning($"New Master save could not be written: {exception.Message}");
+            }
         }
 
         private static bool TryLoad<T>(out T value, string fileName)
@@ -61,6 +83,19 @@ namespace NewMaster.Core
             {
                 Debug.LogWarning($"New Master save could not be loaded: {exception.Message}");
                 return false;
+            }
+        }
+
+        private static void TryDelete(string path)
+        {
+            try
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+            }
+            catch
+            {
+                // Best-effort cleanup only.
             }
         }
 
