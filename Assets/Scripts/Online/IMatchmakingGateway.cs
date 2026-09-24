@@ -1,4 +1,5 @@
 using System;
+
 namespace NewMaster.Online
 {
     public interface IMatchmakingGateway
@@ -6,5 +7,6 @@ namespace NewMaster.Online
         bool IsConnected { get; }
         void FindMatch(string mode, Action<bool> completed);
         void Cancel();
+        void LeaveMatch();
     }
 }
