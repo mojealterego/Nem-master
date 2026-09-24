@@ -162,7 +162,11 @@ namespace NewMaster.Core
             if (!reward.IsAvailable || !dailyRewards.TryClaim(state, now))
                 return false;
 
-            state.Status.Set(NewMasterTextKeys.DailyReward, reward.Day, reward.Coins, reward.Energy);
+            state.Status.Set(
+                NewMasterTextKeys.DailyReward,
+                reward.Day,
+                reward.Coins,
+                reward.Energy.ToString(System.Globalization.CultureInfo.InvariantCulture));
             Publish();
             return true;
         }
