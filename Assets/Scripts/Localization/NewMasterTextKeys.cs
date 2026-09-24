@@ -8,6 +8,7 @@ namespace NewMaster.Localization
         public const string EnergyReward = "game.energy_reward";
         public const string VillageProgress = "game.village_progress";
         public const string NewWorld = "world.new_world";
+        public const string VillageUpgraded = "village.upgraded";
         public const string RaidLoot = "raid.loot";
         public const string RaidShieldBlocked = "raid.shield_blocked";
         public const string RaidNoToken = "raid.no_token";
@@ -19,5 +20,9 @@ namespace NewMaster.Localization
         public const string WorldLabel = "hud.world";
         public const string VillageLabel = "hud.village";
         public const string RaidTokensLabel = "hud.raid_tokens";
+        public const string RaidLootLabel = "hud.raid_loot";
+        public const string RaidShieldsLabel = "hud.raid_shields";
+        public const string CollectionCards = "collection.cards";
+        public const string CollectionReward = "collection.reward";
     }
 }
