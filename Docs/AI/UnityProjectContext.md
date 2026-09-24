@@ -11,7 +11,7 @@
 - Render pipeline: Universal Render Pipeline package configured
 - Input: Unity Input System package configured
 - Addressables: configured as a planned content-delivery dependency
-- Localization: Unity Localization package configured; runtime localization facade, stable key registry and language controller added; Locale/String Table asset creation still requires Unity Editor.
+- Localization: Unity Localization package 1.5.8 configured; stable key registry, structured GameStatus messages, runtime localization facade, persistent language controller, localized HUD/panels and English/Polish translation source added; actual Locale/String Table assets and Editor validation still require Unity Editor.
 - Unity Test Framework: configured
 
 ## Current architecture
@@ -23,6 +23,9 @@
 - `Assets/Tests/EditMode`: deterministic gameplay tests.
 - Runtime assembly: `NewMaster.Runtime`.
 - Test assembly: `NewMaster.Tests.EditMode`.
+
+## Multilingual foundation
+The runtime no longer uses player-facing Polish status strings as gameplay state. GameStatus stores a stable localization key plus typed numeric arguments, with migration support from the previous save format. English and Polish translation source is maintained in `Docs/Localization/NewMaster_UI.csv`. The Unity String Table named `New Master UI` still needs to be created/imported in the Editor.
 
 ## Gameplay foundation
 The current vertical foundation establishes:
