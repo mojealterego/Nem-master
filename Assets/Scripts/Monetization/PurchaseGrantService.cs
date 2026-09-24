@@ -1,4 +1,5 @@
 using NewMaster.Core;
+
 namespace NewMaster.Monetization
 {
     public sealed class PurchaseGrantService
@@ -10,9 +11,10 @@ namespace NewMaster.Monetization
             if (product == null || state == null || string.IsNullOrWhiteSpace(product.productId))
                 return false;
 
-            economy.GrantCoins(state, product.softCurrencyAmount);
-            economy.GrantEnergy(state, product.energyAmount);
-            return true;
+            var grantedCoins = economy.GrantCoins(state, product.softCurrencyAmount);
+            var grantedEnergy = economy.GrantEnergy(state, product.energyAmount);
+
+            return grantedCoins > 0 || grantedEnergy > 0;
         }
     }
 }
