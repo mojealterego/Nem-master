@@ -19,6 +19,8 @@ namespace NewMaster.Localization
         public string CurrentLocaleCode => LocalizationSettings.SelectedLocale?.Identifier.Code;
         public event Action<Locale> LocaleChanged;
         public event Action<string> LanguageCodeChanged;
+        public event Action InitializationCompleted;
+        public bool IsReady { get; private set; }
 
         private void Awake()
         {
@@ -37,6 +39,9 @@ namespace NewMaster.Localization
             var savedCode = PlayerPrefs.GetString(SavedLocaleKey, defaultLocaleCode);
             if (!SetLanguageInternal(savedCode))
                 SetLanguageInternal(defaultLocaleCode);
+
+            IsReady = true;
+            InitializationCompleted?.Invoke();
         }
 
         public void SetLanguage(string localeCode)
