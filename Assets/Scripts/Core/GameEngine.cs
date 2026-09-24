@@ -224,10 +224,12 @@ namespace NewMaster.Core
                     (long)state.CurrentVillageLevel + outcome.VillageProgress);
             }
 
-            if (outcome.VillageProgress > 0)
+            if (outcome.Type == SpinOutcomeType.Jackpot)
+                state.Status.Set(NewMasterTextKeys.JackpotReward, grantedCoins);
+            else if (outcome.VillageProgress > 0)
                 state.Status.Set(NewMasterTextKeys.VillageProgress);
             else if (outcome.Coins > 0)
-                state.Status.Set(NewMasterTextKeys.CoinsReward, outcome.Coins);
+                state.Status.Set(NewMasterTextKeys.CoinsReward, grantedCoins);
             else if (outcome.Energy > 0)
                 state.Status.Set(NewMasterTextKeys.EnergyReward, outcome.Energy);
             else
