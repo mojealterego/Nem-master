@@ -16,7 +16,11 @@ namespace NewMaster.LiveOps
         private DateTime startUtc => ParseUtc(startUtcIso);
         private DateTime endUtc => ParseUtc(endUtcIso);
 
-        public bool IsActive(DateTime utcNow) => utcNow >= StartUtc && utcNow < EndUtc;
+        public bool IsActive(DateTime utcNow) =>
+            utcNow.Kind == DateTimeKind.Utc &&
+            StartUtc < EndUtc &&
+            utcNow >= StartUtc &&
+            utcNow < EndUtc;
 
         private static DateTime ParseUtc(string value)
         {
