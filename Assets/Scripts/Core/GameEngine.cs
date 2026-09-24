@@ -63,6 +63,8 @@ namespace NewMaster.Core
             return upgraded;
         }
 
+        public void NotifyStateChanged() => Publish();
+
         public void AddEnergy(int amount)
         {
             state.Energy = Mathf.Max(0, state.Energy + amount);
