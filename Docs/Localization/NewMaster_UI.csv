@@ -1,0 +1,23 @@
+Key,English,Polski
+game.ready,New Master ready.,New Master gotowy.
+game.no_reward,"No reward. The next spin can change everything.","Brak nagrody. Następny obrót może zmienić wszystko."
+game.coins_reward,+{0:N0} coins,+{0:N0} monet
+game.energy_reward,+{0} energy,+{0} energii
+game.village_progress,Village progress +1,Postęp wioski +1
+world.new_world,New world: {0:000},Nowy świat: {0:000}
+village.upgraded,Building {1}: level {0},Budowla {1}: poziom {0}
+raid.loot,+{0:N0} loot,+{0:N0} łupu
+raid.shield_blocked,Raid blocked by a shield.,Rajd zablokowany przez tarczę.
+raid.no_token,No attack token.,Brak tokenu ataku.
+raid.empty_target,Target has no available loot.,Cel nie ma dostępnego łupu.
+collection.complete,Collection completed: +{0:N0},Kolekcja ukończona: +{0:N0}
+collection.incomplete,Collection is not complete yet.,Kolekcja nie jest jeszcze kompletna.
+hud.coins,Coins,Monety
+hud.energy,Energy,Energia
+hud.world,World {0:000},Świat {0:000}
+hud.village,Village {0},Wioska {0}
+hud.raid_tokens,Attack tokens: {0},Tokeny ataku: {0}
+hud.raid_loot,Loot: {0:N0},Łup: {0:N0}
+hud.raid_shields,Shields: {0},Tarcze: {0}
+collection.cards,{0}/{1} cards,{0}/{1} kart
+collection.reward,Reward: {0:N0} coins,Nagroda: {0:N0} monet
