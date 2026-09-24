@@ -31,6 +31,7 @@ namespace NewMaster.Core
                 return false;
 
             state = loaded;
+            GameStateMigrations.Normalize(state);
             state.IsSpinning = false;
 
             if (!saveService.TryLoadVillage<VillageState>(out var loadedVillage))
