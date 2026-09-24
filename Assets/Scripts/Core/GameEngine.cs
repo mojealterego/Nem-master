@@ -174,7 +174,7 @@ namespace NewMaster.Core
             var applied = villageDefense.ApplyRaidDamage(villageState, damage);
             if (applied > 0)
             {
-                state.Status.Set("village.raid_damage", applied);
+                state.Status.Set(NewMasterTextKeys.VillageRaidDamage, applied);
                 Publish();
             }
 
