@@ -3,6 +3,7 @@ using NewMaster.Localization;
 
 namespace NewMaster.Village
 {
+        private readonly EconomyService economy = new();
     public sealed class VillageService
     {
         public bool TryUpgrade(
@@ -18,10 +19,8 @@ namespace NewMaster.Village
                 return false;
 
             var cost = CalculateUpgradeCost(building, level);
-            if (gameState.Coins < cost)
+            if (!economy.TrySpendCoins(gameState, cost))
                 return false;
-
-            gameState.Coins -= cost;
 
             var progress = FindOrCreate(villageState, building.buildingId);
             progress.Level++;
