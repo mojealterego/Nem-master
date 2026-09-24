@@ -26,6 +26,26 @@ namespace NewMaster.Tests
         }
 
         [Test]
+        public void CompletedSetCannotBeClaimedTwice()
+        {
+            var set = new CollectionSet
+            {
+                Id = "set-03",
+                DisplayName = "Trzeci Album",
+                CompletionReward = 1000,
+                RequiredCards = { "card-a" }
+            };
+            var state = new CollectionState();
+            state.OwnedCardIds.Add("card-a");
+            var game = new GameState();
+            var service = new CollectionService();
+
+            Assert.That(service.TryComplete(set, state, game), Is.True);
+            Assert.That(service.TryComplete(set, state, game), Is.False);
+            Assert.That(game.Coins, Is.EqualTo(1000));
+        }
+
+        [Test]
         public void IncompleteSetDoesNotGrantReward()
         {
             var set = new CollectionSet
