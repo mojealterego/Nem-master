@@ -1,4 +1,5 @@
 using NewMaster.Core;
+using NewMaster.Localization;
 
 namespace NewMaster.Raids
 {
@@ -12,7 +13,10 @@ namespace NewMaster.Raids
                 return new RaidResult { Type = RaidResultType.Blocked };
 
             if (gameState.RaidTokens <= 0)
+            {
+                gameState.Status.Set(NewMasterTextKeys.RaidNoToken);
                 return new RaidResult { Type = RaidResultType.Blocked };
+            }
 
             var result = raidService.Resolve(target, true);
 
@@ -22,11 +26,15 @@ namespace NewMaster.Raids
             if (result.Loot > 0)
             {
                 gameState.Coins += result.Loot;
-                gameState.StatusMessage = $"+{result.Loot:N0} łupu";
+                gameState.Status.Set(NewMasterTextKeys.RaidLoot, result.Loot);
             }
             else if (result.ShieldsConsumed > 0)
             {
-                gameState.StatusMessage = "Tarcza zablokowała rajd.";
+                gameState.Status.Set(NewMasterTextKeys.RaidShieldBlocked);
+            }
+            else
+            {
+                gameState.Status.Set(NewMasterTextKeys.RaidEmptyTarget);
             }
 
             return result;
