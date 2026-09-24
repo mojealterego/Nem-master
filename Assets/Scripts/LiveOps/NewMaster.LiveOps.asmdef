@@ -1,0 +1,10 @@
+{
+  "name": "NewMaster.LiveOps",
+  "rootNamespace": "NewMaster.LiveOps",
+  "references": ["NewMaster.Runtime"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "autoReferenced": true
+}
