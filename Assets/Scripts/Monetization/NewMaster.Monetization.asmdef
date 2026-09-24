@@ -1,0 +1,10 @@
+{
+  "name": "NewMaster.Monetization",
+  "rootNamespace": "NewMaster.Monetization",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "autoReferenced": true
+}
