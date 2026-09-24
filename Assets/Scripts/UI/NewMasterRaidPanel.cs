@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using NewMaster.Core;
-using NewMaster.Raids;
+using NewMaster.Raids;\nusing NewMaster.Localization;
 
 namespace NewMaster.UI
 {
@@ -49,13 +49,7 @@ namespace NewMaster.UI
                 return;
 
             var result = raidService.TryRaid(gameEngine.State, target);
-            var message = result.Type switch
-            {
-                RaidResultType.Success => $"+{result.Loot:N0} łupu",
-                RaidResultType.Blocked when result.ShieldsConsumed > 0 => "Rajd zablokowany przez tarczę.",
-                RaidResultType.Blocked => "Brak tokenu ataku.",
-                _ => "Cel nie ma dostępnego łupu."
-            };
+            var message = NewMasterLocalization.Get(gameEngine.State.Status);
 
             if (resultText != null)
                 resultText.text = message;
@@ -69,16 +63,16 @@ namespace NewMaster.UI
                 return;
 
             if (targetText != null)
-                targetText.text = target.DisplayName ?? "Cel rajdu";
+                targetText.text = target.DisplayName ?? "Raid target";
 
             if (lootText != null)
-                lootText.text = $"Łup: {target.AvailableLoot:N0}";
+                lootText.text = NewMasterLocalization.Get(NewMasterTextKeys.RaidLootLabel, target.AvailableLoot);
 
             if (shieldText != null)
-                shieldText.text = $"Tarcze: {target.ShieldCount}";
+                shieldText.text = NewMasterLocalization.Get(NewMasterTextKeys.RaidShieldsLabel, target.ShieldCount);
 
             if (tokenText != null)
-                tokenText.text = $"Tokeny: {state.RaidTokens}";
+                tokenText.text = NewMasterLocalization.Get(NewMasterTextKeys.RaidTokensLabel, state.RaidTokens);
 
             if (raidButton != null)
                 raidButton.interactable = !state.IsSpinning && state.RaidTokens > 0 && target.AvailableLoot > 0;
