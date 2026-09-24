@@ -18,6 +18,7 @@ namespace NewMaster.Localization
         public IReadOnlyList<string> SupportedLocaleCodes => supportedLocaleCodes;
         public string CurrentLocaleCode => LocalizationSettings.SelectedLocale?.Identifier.Code;
         public event Action<Locale> LocaleChanged;
+        public event Action<string> LanguageCodeChanged;
 
         private void Awake()
         {
@@ -75,7 +76,21 @@ namespace NewMaster.Localization
             return true;
         }
 
-        private void HandleLocaleChanged(Locale locale) =>
+        public IReadOnlyList<string> GetSupportedLocaleLabels()
+        {
+            return supportedLocaleCodes
+                .Select(code => LocalizationSettings.AvailableLocales.Locales
+                    .FirstOrDefault(locale => string.Equals(
+                        locale.Identifier.Code,
+                        code,
+                        StringComparison.OrdinalIgnoreCase))?.name ?? code)
+                .ToList();
+        }
+
+        private void HandleLocaleChanged(Locale locale)
+        {
             LocaleChanged?.Invoke(locale);
+            LanguageCodeChanged?.Invoke(locale?.Identifier.Code);
+        }
     }
 }
