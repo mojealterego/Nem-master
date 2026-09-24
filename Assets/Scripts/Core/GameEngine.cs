@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NewMaster.Localization;
+using NewMaster.Collections;
 using NewMaster.Progression;
 using NewMaster.Village;
 using NewMaster.Worlds;
@@ -14,16 +15,19 @@ namespace NewMaster.Core
         [SerializeField] private GameState state = new();
         [SerializeField] private WorldCatalog worldCatalog;
         [SerializeField] private VillageState villageState = new();
+        [SerializeField] private CollectionState collectionState = new();
         [SerializeField] private float spinDuration = 0.8f;
 
         public GameState State => state;
         public VillageState VillageState => villageState;
+        public CollectionState CollectionState => collectionState;
         public event Action<GameState> StateChanged;
 
         public void SaveProgress()
         {
             saveService.Save(state, GameState.CurrentVersion);
             saveService.SaveVillage(villageState, GameState.CurrentVersion);
+            saveService.SaveCollections(collectionState, GameState.CurrentVersion);
         }
 
         public bool LoadProgress()
@@ -39,6 +43,11 @@ namespace NewMaster.Core
                 loadedVillage = new VillageState();
 
             villageState = loadedVillage;
+
+            if (!saveService.TryLoadCollections<CollectionState>(out var loadedCollections))
+                loadedCollections = new CollectionState();
+
+            collectionState = loadedCollections;
             Publish();
             return true;
         }
