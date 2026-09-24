@@ -19,6 +19,7 @@ namespace NewMaster.Core
         [SerializeField, Min(0f)] private float spinDuration = 0.8f;
         [SerializeField, Min(5f)] private float autoSaveIntervalSeconds = 30f;
         [SerializeField, Min(0)] private int battlePassXpPerSpin = 10;
+        [SerializeField, Min(0)] private int masteryXpPerSpin = 25;
 
         private Coroutine autoSaveCoroutine;
         private WorldCatalog runtimeWorldCatalog;
@@ -36,6 +37,7 @@ namespace NewMaster.Core
         private readonly WorldRuleService worldRules = new();
         private readonly DailyRewardService dailyRewards = new();
         private readonly BattlePassProgressionService battlePass = new();
+        private readonly MasteryService mastery = new();
 
         public void SaveProgress()
         {
@@ -225,6 +227,13 @@ namespace NewMaster.Core
             economy.GrantEnergy(state, outcome.Energy);
             battlePass.AddExperience(state.BattlePass, battlePassXpPerSpin);
 
+            var masteryXp = masteryXpPerSpin;
+            if (outcome.Type == SpinOutcomeType.Jackpot)
+                masteryXp = AddClamped(masteryXp, 250);
+            else if (outcome.VillageProgress > 0)
+                masteryXp = AddClamped(masteryXp, 75);
+            mastery.AddExperience(state.Mastery, masteryXp);
+
             if (outcome.Type != SpinOutcomeType.Nothing && state.SpinsWon < int.MaxValue)
                 state.SpinsWon++;
 
@@ -289,6 +298,8 @@ namespace NewMaster.Core
             state ??= new GameState();
             state.BattlePass ??= new BattlePassState();
             state.BattlePass.Normalize(int.MaxValue);
+            state.Mastery ??= new MasteryState();
+            state.Mastery.Normalize();
             state.Session ??= new GameSessionState();
             villageState ??= new VillageState();
             collectionState ??= new CollectionState();
