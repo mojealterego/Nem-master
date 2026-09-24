@@ -6,6 +6,7 @@
     "Unity.InputSystem",
     "NewMaster.Raids",
     "NewMaster.Collections",
+    "NewMaster.Monetization",
     "Unity.Localization"
   ],
   "includePlatforms": [],
