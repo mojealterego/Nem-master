@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using NewMaster.Localization;
 using NewMaster.Collections;
-using NewMaster.Monetization;
 using NewMaster.Progression;
 using NewMaster.Village;
 using NewMaster.Worlds;
@@ -36,7 +35,7 @@ namespace NewMaster.Core
         private readonly LocalSaveService saveService = new();
         private readonly WorldRuleService worldRules = new();
         private readonly DailyRewardService dailyRewards = new();
-        private readonly BattlePassService battlePass = new();
+        private readonly BattlePassProgressionService battlePass = new();
 
         public void SaveProgress()
         {
