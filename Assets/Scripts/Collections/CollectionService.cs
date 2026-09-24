@@ -25,8 +25,8 @@ namespace NewMaster.Collections
             }
 
             state.CompletedSetIds.Add(set.Id);
-            economy.GrantCoins(gameState, set.CompletionReward);
-            gameState.Status.Set(NewMasterTextKeys.CollectionComplete, set.CompletionReward);
+            var granted = economy.GrantCoins(gameState, set.CompletionReward);
+            gameState.Status.Set(NewMasterTextKeys.CollectionComplete, granted);
             return true;
         }
 
