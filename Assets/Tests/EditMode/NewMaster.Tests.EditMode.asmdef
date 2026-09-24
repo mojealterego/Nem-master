@@ -3,7 +3,12 @@
   "rootNamespace": "NewMaster.Tests",
   "references": [
     "NewMaster.Runtime",
-    "NewMaster.UI"
+    "NewMaster.UI",
+    "NewMaster.Social",
+    "NewMaster.LiveOps",
+    "NewMaster.Monetization",
+    "NewMaster.Analytics",
+    "NewMaster.Online"
   ],
   "includePlatforms": [
     "Editor"
