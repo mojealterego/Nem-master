@@ -4,6 +4,7 @@ game.no_reward,"No reward. The next spin can change everything.","Brak nagrody. 
 game.coins_reward,+{0:N0} coins,+{0:N0} monet
 game.energy_reward,+{0} energy,+{0} energii
 game.village_progress,Village progress +1,Postęp wioski +1
+game.jackpot_reward,JACKPOT! +{0:N0} coins,JACKPOT! +{0:N0} monet
 world.new_world,New world: {0:000},Nowy świat: {0:000}
 village.upgraded,Building {1}: level {0},Budowla {1}: poziom {0}
 raid.loot,+{0:N0} loot,+{0:N0} łupu
