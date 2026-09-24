@@ -16,7 +16,19 @@ namespace NewMaster.Core
             public string Payload;
         }
 
-        public void Save<T>(T value, int version)
+        public void Save<T>(T value, int version) =>
+            Save(value, version, FileName);
+
+        public void SaveVillage<T>(T value, int version) =>
+            Save(value, version, VillageFileName);
+
+        public bool TryLoad<T>(out T value) =>
+            TryLoad(out value, FileName);
+
+        public bool TryLoadVillage<T>(out T value) =>
+            TryLoad(out value, VillageFileName);
+
+        private static void Save<T>(T value, int version, string fileName)
         {
             var envelope = new SaveEnvelope
             {
@@ -28,11 +40,7 @@ namespace NewMaster.Core
             File.WriteAllText(GetPath(fileName), json);
         }
 
-        public void SaveVillage<T>(T value, int version) => Save(value, version, VillageFileName);
-
-        public bool TryLoadVillage<T>(out T value) => TryLoad(out value, VillageFileName);
-
-        private void Save<T>(T value, int version, string fileName)
+        private static bool TryLoad<T>(out T value, string fileName)
         {
             value = default;
 
@@ -56,6 +64,7 @@ namespace NewMaster.Core
             }
         }
 
-        private bool TryLoad<T>(out T value, string fileName)
+        private static string GetPath(string fileName) =>
+            Path.Combine(Application.persistentDataPath, fileName);
     }
 }
