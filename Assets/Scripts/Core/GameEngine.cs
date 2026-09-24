@@ -16,7 +16,7 @@ namespace NewMaster.Core
         [SerializeField] private WorldCatalog worldCatalog;
         [SerializeField] private VillageState villageState = new();
         [SerializeField] private CollectionState collectionState = new();
-        [SerializeField] private float spinDuration = 0.8f;
+        [SerializeField, Min(0f)] private float spinDuration = 0.8f;
         [SerializeField, Min(5f)] private float autoSaveIntervalSeconds = 30f;
 
         private Coroutine autoSaveCoroutine;
@@ -27,8 +27,16 @@ namespace NewMaster.Core
         public CollectionState CollectionState => collectionState;
         public event Action<GameState> StateChanged;
 
+        private readonly System.Random rng = new();
+        private readonly EconomyService economy = new();
+        private readonly ProgressionService progression = new();
+        private readonly VillageService village = new();
+        private readonly LocalSaveService saveService = new();
+        private readonly WorldRuleService worldRules = new();
+
         public void SaveProgress()
         {
+            EnsureState();
             GameStateMigrations.Normalize(state);
             villageState?.Normalize();
             collectionState?.Normalize();
@@ -43,6 +51,7 @@ namespace NewMaster.Core
                 return false;
 
             state = loaded;
+            EnsureState();
             GameStateMigrations.Normalize(state);
             state.IsSpinning = false;
 
@@ -61,15 +70,10 @@ namespace NewMaster.Core
             return true;
         }
 
-        private readonly System.Random rng = new();
-        private readonly EconomyService economy = new();
-        private readonly ProgressionService progression = new();
-        private readonly VillageService village = new();
-        private readonly LocalSaveService saveService = new();
-        private readonly WorldRuleService worldRules = new();
-
         private void Awake()
         {
+            EnsureState();
+
             if (worldCatalog == null)
             {
                 runtimeWorldCatalog = WorldCatalog.CreateRuntimeFallback();
@@ -108,9 +112,10 @@ namespace NewMaster.Core
 
         private void OnApplicationQuit() => SaveProgress();
 
-
         public void Spin()
         {
+            EnsureState();
+
             if (state.IsSpinning || state.Energy <= 0)
                 return;
 
@@ -119,6 +124,7 @@ namespace NewMaster.Core
 
         public bool TryUnlockNextWorld()
         {
+            EnsureState();
             var unlocked = progression.TryUnlockNextWorld(state, worldCatalog);
             if (unlocked)
                 Publish();
@@ -128,6 +134,7 @@ namespace NewMaster.Core
 
         public bool TryUpgradeBuilding(BuildingDefinition building)
         {
+            EnsureState();
             var upgraded = village.TryUpgrade(state, villageState, building);
             if (upgraded)
                 Publish();
@@ -139,12 +146,26 @@ namespace NewMaster.Core
 
         public void AddEnergy(int amount)
         {
+            EnsureState();
+
             if (amount >= 0)
                 economy.GrantEnergy(state, amount);
             else
-                state.Energy = Mathf.Max(0, state.Energy + amount);
+                state.Energy = (int)Math.Max(0L, (long)state.Energy + amount);
 
             Publish();
+        }
+
+        private IEnumerator AutoSaveRoutine()
+        {
+            var waitSeconds = Mathf.Max(5f, autoSaveIntervalSeconds);
+            while (isActiveAndEnabled)
+            {
+                yield return new WaitForSeconds(waitSeconds);
+
+                if (state != null && !state.IsSpinning)
+                    SaveProgress();
+            }
         }
 
         private IEnumerator SpinRoutine()
@@ -153,7 +174,7 @@ namespace NewMaster.Core
             state.Energy--;
             Publish();
 
-            yield return new WaitForSeconds(spinDuration);
+            yield return new WaitForSeconds(Mathf.Max(0f, spinDuration));
 
             var symbols = GetCurrentSymbols();
             var slots = new List<string>
@@ -164,16 +185,27 @@ namespace NewMaster.Core
             };
 
             var world = worldCatalog == null ? null : worldCatalog.Find(state.CurrentWorldId);
-            var baseReward = world == null ? 100L : Math.Max(100L, worldRules.ApplyRewardMultiplier(world, world.baseSpinReward));
-            var outcome = SpinRules.Resolve(slots, baseReward, world == null ? 1 : world.energyReward);
+            var baseReward = world == null
+                ? 100L
+                : Math.Max(100L, worldRules.ApplyRewardMultiplier(world, world.baseSpinReward));
+            var outcome = SpinRules.Resolve(
+                slots,
+                baseReward,
+                world == null ? 1 : world.energyReward);
 
             state.Slots = new List<string>(slots);
             economy.GrantCoins(state, outcome.Coins);
             economy.GrantEnergy(state, outcome.Energy);
-            state.SpinsWon += outcome.Type == SpinOutcomeType.Nothing ? 0 : 1;
+            state.SpinsWon = outcome.Type == SpinOutcomeType.Nothing
+                ? state.SpinsWon
+                : (state.SpinsWon == int.MaxValue ? int.MaxValue : state.SpinsWon + 1);
 
             if (outcome.VillageProgress > 0)
-                state.CurrentVillageLevel += outcome.VillageProgress;
+            {
+                state.CurrentVillageLevel = (int)Math.Min(
+                    int.MaxValue,
+                    (long)state.CurrentVillageLevel + outcome.VillageProgress);
+            }
 
             if (outcome.VillageProgress > 0)
                 state.Status.Set(NewMasterTextKeys.VillageProgress);
@@ -196,6 +228,13 @@ namespace NewMaster.Core
                 return world.symbols;
 
             return new List<string> { "Coin", "Crown", "Chest", "Energy", "Hammer" };
+        }
+
+        private void EnsureState()
+        {
+            state ??= new GameState();
+            villageState ??= new VillageState();
+            collectionState ??= new CollectionState();
         }
 
         private void Publish() => StateChanged?.Invoke(state);
