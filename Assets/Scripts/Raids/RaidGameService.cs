@@ -3,8 +3,9 @@ using NewMaster.Localization;
 
 namespace NewMaster.Raids
 {
-        private readonly EconomyService economy = new();
     public sealed class RaidGameService
+    {
+        private readonly EconomyService economy = new();
     {
         private readonly RaidService raidService = new();
 
