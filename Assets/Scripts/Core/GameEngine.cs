@@ -221,6 +221,19 @@ namespace NewMaster.Core
             if (outcome.Type != SpinOutcomeType.Nothing && state.SpinsWon < int.MaxValue)
                 state.SpinsWon++;
 
+            if (outcome.Type != SpinOutcomeType.Nothing)
+            {
+                if (state.SpinStreak < int.MaxValue)
+                    state.SpinStreak++;
+
+                if (state.SpinStreak > state.BestSpinStreak)
+                    state.BestSpinStreak = state.SpinStreak;
+            }
+            else
+            {
+                state.SpinStreak = 0;
+            }
+
             if (state.Session != null)
             {
                 if (state.Session.SpinsThisSession < int.MaxValue)
