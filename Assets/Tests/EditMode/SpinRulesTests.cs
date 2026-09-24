@@ -40,5 +40,15 @@ namespace NewMaster.Tests
             Assert.That(outcome.Type, Is.EqualTo(SpinOutcomeType.VillageProgress));
             Assert.That(outcome.VillageProgress, Is.EqualTo(1));
         }
+
+        [Test]
+        public void JackpotRewardSaturatesAtLongMaxValue()
+        {
+            var outcome = SpinRules.Resolve(
+                new[] { "Coin", "Coin", "Coin" },
+                long.MaxValue);
+
+            Assert.That(outcome.Coins, Is.EqualTo(long.MaxValue));
+        }
     }
 }
