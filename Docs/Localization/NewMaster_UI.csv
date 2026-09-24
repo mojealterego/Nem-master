@@ -5,6 +5,7 @@ game.coins_reward,+{0:N0} coins,+{0:N0} monet
 game.energy_reward,+{0} energy,+{0} energii
 game.village_progress,Village progress +1,Postęp wioski +1
 game.jackpot_reward,JACKPOT! +{0:N0} coins,JACKPOT! +{0:N0} monet
+game.daily_reward,Daily reward day {0}: +{1:N0} coins +{2} energy,Dzienna nagroda dzień {0}: +{1:N0} monet +{2} energii
 world.new_world,New world: {0:000},Nowy świat: {0:000}
 village.upgraded,Building {1}: level {0},Budowla {1}: poziom {0}
 raid.loot,+{0:N0} loot,+{0:N0} łupu
