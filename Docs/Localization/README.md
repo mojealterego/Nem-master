@@ -36,7 +36,7 @@ In Unity Editor, create/configure:
 7. Test locale switching and fallback behavior in Play Mode.
 8. Test pseudo-localization before production UI lock.
 
-Unity's Localization package supports string localization, Smart Strings, pseudo-localization and CSV/XLIFF import/export. citeturn0search1
+Unity's Localization package supports string localization, Smart Strings, pseudo-localization and CSV/XLIFF import/export.
 
 ## Runtime rules
 
@@ -49,7 +49,7 @@ Use:
 - NewMasterLocalization.Get(...) for formatted runtime output.
 - NewMasterLocalizedText / LocalizeStringEvent for component-driven UI.
 
-LocalizedString supports runtime formatting arguments, and LocalizeStringEvent refreshes when the selected locale or string reference changes. citeturn0search0turn0search2
+LocalizedString supports runtime formatting arguments, and LocalizeStringEvent refreshes when the selected locale or string reference changes.
 
 ## Current limitation
 
