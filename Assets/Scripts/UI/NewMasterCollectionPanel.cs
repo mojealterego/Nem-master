@@ -2,7 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using NewMaster.Collections;
-using NewMaster.Core;\nusing NewMaster.Localization;
+using NewMaster.Core;
+using NewMaster.Localization;
 
 namespace NewMaster.UI
 {
