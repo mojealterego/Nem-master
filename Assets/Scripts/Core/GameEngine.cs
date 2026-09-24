@@ -20,6 +20,9 @@ namespace NewMaster.Core
         [SerializeField, Min(5f)] private float autoSaveIntervalSeconds = 30f;
         [SerializeField, Min(0)] private int battlePassXpPerSpin = 10;
         [SerializeField, Min(0)] private int masteryXpPerSpin = 25;
+        [SerializeField, Min(0)] private int streakBonusAtThree = 250;
+        [SerializeField, Min(0)] private int streakBonusAtFive = 750;
+        [SerializeField, Min(0)] private int streakBonusAtTen = 2500;
 
         private Coroutine autoSaveCoroutine;
         private WorldCatalog runtimeWorldCatalog;
@@ -38,6 +41,7 @@ namespace NewMaster.Core
         private readonly DailyRewardService dailyRewards = new();
         private readonly BattlePassProgressionService battlePass = new();
         private readonly MasteryService mastery = new();
+        private readonly LiveOpsProgressService liveOps = new();
 
         public void SaveProgress()
         {
@@ -226,6 +230,10 @@ namespace NewMaster.Core
             var grantedCoins = economy.GrantCoins(state, outcome.Coins);
             economy.GrantEnergy(state, outcome.Energy);
             battlePass.AddExperience(state.BattlePass, battlePassXpPerSpin);
+            liveOps.AddProgress(state.LiveOps, "spin.50", 1, 50);
+            liveOps.AddProgress(state.LiveOps, "spin.250", 1, 250);
+            if (outcome.Type == SpinOutcomeType.Jackpot)
+                liveOps.AddProgress(state.LiveOps, "jackpot.10", 1, 10);
 
             var masteryXp = masteryXpPerSpin;
             if (outcome.Type == SpinOutcomeType.Jackpot)
@@ -244,6 +252,10 @@ namespace NewMaster.Core
 
                 if (state.SpinStreak > state.BestSpinStreak)
                     state.BestSpinStreak = state.SpinStreak;
+
+                var streakBonus = GetStreakBonus(state.SpinStreak);
+                if (streakBonus > 0)
+                    economy.GrantCoins(state, streakBonus);
             }
             else
             {
@@ -300,6 +312,8 @@ namespace NewMaster.Core
             state.BattlePass.Normalize(int.MaxValue);
             state.Mastery ??= new MasteryState();
             state.Mastery.Normalize();
+            state.LiveOps ??= new LiveOpsProgressState();
+            state.LiveOps.Normalize();
             state.Session ??= new GameSessionState();
             villageState ??= new VillageState();
             collectionState ??= new CollectionState();
@@ -313,6 +327,17 @@ namespace NewMaster.Core
 
             var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             state.Session.Reset(now, now);
+        }
+
+        private int GetStreakBonus(int streak)
+        {
+            if (streak == 10)
+                return streakBonusAtTen;
+            if (streak == 5)
+                return streakBonusAtFive;
+            if (streak == 3)
+                return streakBonusAtThree;
+            return 0;
         }
 
         private static int AddClamped(int current, long amount)
