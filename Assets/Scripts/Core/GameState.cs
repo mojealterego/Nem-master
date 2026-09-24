@@ -19,6 +19,7 @@ namespace NewMaster.Core
         public GameStatus Status = new();
         public BattlePassState BattlePass = new();
         public GameSessionState Session = new();
+        public DailyRewardState DailyReward = new();
         public List<string> Slots = new() { "?", "?", "?" };
 
         [Obsolete("Use Status instead.")]
