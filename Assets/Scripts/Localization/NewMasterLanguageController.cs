@@ -5,15 +5,16 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
+using NewMaster.Core;
 
 namespace NewMaster.Localization
 {
     public sealed class NewMasterLanguageController : MonoBehaviour
     {
-        private const string SavedLocaleKey = "new_master.locale";
-
         [SerializeField] private string defaultLocaleCode = "en";
         [SerializeField] private List<string> supportedLocaleCodes = new() { "en", "pl" };
+
+        private readonly NewMasterSettingsService settingsService = new();
 
         public IReadOnlyList<string> SupportedLocaleCodes => supportedLocaleCodes;
         public string CurrentLocaleCode => LocalizationSettings.SelectedLocale?.Identifier.Code;
@@ -36,7 +37,9 @@ namespace NewMaster.Localization
         {
             yield return LocalizationSettings.InitializationOperation;
 
-            var savedCode = PlayerPrefs.GetString(SavedLocaleKey, defaultLocaleCode);
+            var savedCode = settingsService.Load().LanguageCode;
+            if (string.IsNullOrWhiteSpace(savedCode))
+                savedCode = defaultLocaleCode;
             if (!SetLanguageInternal(savedCode))
                 SetLanguageInternal(defaultLocaleCode);
 
@@ -47,7 +50,11 @@ namespace NewMaster.Localization
         public void SetLanguage(string localeCode)
         {
             if (SetLanguageInternal(localeCode))
-                PlayerPrefs.Save();
+            {
+                var settings = settingsService.Load();
+                settings.LanguageCode = localeCode;
+                settingsService.Save(settings);
+            }
         }
 
         public void SetLanguage(int index)
@@ -77,7 +84,6 @@ namespace NewMaster.Localization
                 return false;
 
             LocalizationSettings.SelectedLocale = locale;
-            PlayerPrefs.SetString(SavedLocaleKey, locale.Identifier.Code);
             return true;
         }
 
