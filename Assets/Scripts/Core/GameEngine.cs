@@ -157,10 +157,11 @@ namespace NewMaster.Core
         {
             EnsureState();
 
-            if (!dailyRewards.TryClaim(state, DateTimeOffset.UtcNow))
+            var now = DateTimeOffset.UtcNow;
+            var reward = dailyRewards.Preview(state, now);
+            if (!reward.IsAvailable || !dailyRewards.TryClaim(state, now))
                 return false;
 
-            var reward = dailyRewards.Preview(state, DateTimeOffset.UtcNow);
             state.Status.Set(NewMasterTextKeys.DailyReward, reward.Day, reward.Coins, reward.Energy);
             Publish();
             return true;
