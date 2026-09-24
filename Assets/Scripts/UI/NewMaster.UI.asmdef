@@ -3,7 +3,9 @@
   "rootNamespace": "NewMaster.UI",
   "references": [
     "NewMaster.Runtime",
-    "Unity.InputSystem"
+    "Unity.InputSystem",
+    "NewMaster.Raids",
+    "NewMaster.Collections"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],
