@@ -1,6 +1,8 @@
-# Nem Master
+# New Master
 
-Production-oriented Unity mobile game foundation inspired by the supplied Coin Master analysis.
+**New Master** is an original next-generation mobile game designed as a successor to the Coin Master-style progression formula — not a 1:1 clone.
+
+The project expands the familiar spin → reward → economy → progression loop into a broader, data-driven social and live-ops game architecture. Game systems, economy, worlds, progression, presentation and technology are being designed as original components.
 
 ## Target
 - Unity 6.3 LTS
@@ -17,6 +19,18 @@ Production-oriented Unity mobile game foundation inspired by the supplied Coin M
 - World progression hook
 - Unity project context
 
+## Planned architecture
+- Core Engine
+- World Engine
+- Village Engine
+- Raid/Attack Engine
+- Collection Engine
+- Social Engine
+- LiveOps
+- Online/Cloud/Server Authority
+- Monetization
+- Characters, animation, VFX, audio and haptics
+
 ## Roadmap
 1. Boot scene and production UI
 2. Village builder
@@ -31,4 +45,4 @@ Production-oriented Unity mobile game foundation inspired by the supplied Coin M
 11. Analytics and anti-cheat
 12. Android profiling and release validation
 
-> Generated project skeleton. Unity Editor validation is still required before treating the repository as build-ready.
+> Repository foundation only. Unity Editor validation, Play Mode, device testing and Android build validation remain required before treating the project as build-ready.
