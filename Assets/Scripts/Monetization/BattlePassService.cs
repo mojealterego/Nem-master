@@ -6,6 +6,18 @@ namespace NewMaster.Monetization
     {
         private readonly EconomyService economy = new();
 
+        public int AddExperience(BattlePassState state, int amount)
+        {
+            if (state == null || amount <= 0)
+                return 0;
+
+            var before = state.Experience;
+            state.Experience = (int)System.Math.Min(
+                int.MaxValue,
+                (long)state.Experience + amount);
+            return state.Experience - before;
+        }
+
         public int GetUnlockedTier(BattlePassDefinition definition, BattlePassState state)
         {
             if (definition == null || state == null || definition.tiers == null)
