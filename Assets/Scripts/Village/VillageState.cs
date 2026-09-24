@@ -21,15 +21,47 @@ namespace NewMaster.Village
         public int GetLevel(int buildingId)
         {
             for (var i = 0; i < Buildings.Count; i++)
-                if (Buildings[i].BuildingId == buildingId) return Buildings[i].Level;
+            {
+                var building = Buildings[i];
+                if (building != null && building.BuildingId == buildingId)
+                    return building.Level;
+            }
+
             return 1;
         }
 
         public int GetDamage(int buildingId)
         {
             for (var i = 0; i < Buildings.Count; i++)
-                if (Buildings[i].BuildingId == buildingId) return Buildings[i].Damage;
+            {
+                var building = Buildings[i];
+                if (building != null && building.BuildingId == buildingId)
+                    return building.Damage;
+            }
+
             return 0;
+        }
+
+        public void Normalize()
+        {
+            if (Buildings == null)
+                Buildings = new List<BuildingProgress>();
+
+            for (var i = Buildings.Count - 1; i >= 0; i--)
+            {
+                var building = Buildings[i];
+                if (building == null || building.BuildingId <= 0)
+                {
+                    Buildings.RemoveAt(i);
+                    continue;
+                }
+
+                building.Level = Math.Max(1, building.Level);
+                building.Damage = Math.Max(0, building.Damage);
+            }
+
+            if (string.IsNullOrWhiteSpace(CustomizationId))
+                CustomizationId = "default";
         }
     }
 }
