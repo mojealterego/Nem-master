@@ -7,6 +7,7 @@ namespace NewMaster.Core
     public sealed class LocalSaveService
     {
         private const string FileName = "new_master_save.json";
+        private const string VillageFileName = "new_master_village.json";
 
         [Serializable]
         private sealed class SaveEnvelope
@@ -24,14 +25,18 @@ namespace NewMaster.Core
             };
 
             var json = JsonUtility.ToJson(envelope);
-            File.WriteAllText(GetPath(), json);
+            File.WriteAllText(GetPath(fileName), json);
         }
 
-        public bool TryLoad<T>(out T value)
+        public void SaveVillage<T>(T value, int version) => Save(value, version, VillageFileName);
+
+        public bool TryLoadVillage<T>(out T value) => TryLoad(out value, VillageFileName);
+
+        private void Save<T>(T value, int version, string fileName)
         {
             value = default;
 
-            var path = GetPath();
+            var path = GetPath(fileName);
             if (!File.Exists(path))
                 return false;
 
@@ -51,7 +56,6 @@ namespace NewMaster.Core
             }
         }
 
-        private static string GetPath() =>
-            Path.Combine(Application.persistentDataPath, FileName);
+        private bool TryLoad<T>(out T value, string fileName)
     }
 }
