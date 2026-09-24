@@ -49,13 +49,16 @@ namespace NewMaster.UI
                 return;
 
             var result = raidService.TryRaid(gameEngine.State, target);
-            resultText.text = result.Type switch
+            var message = result.Type switch
             {
                 RaidResultType.Success => $"+{result.Loot:N0} łupu",
                 RaidResultType.Blocked when result.ShieldsConsumed > 0 => "Rajd zablokowany przez tarczę.",
                 RaidResultType.Blocked => "Brak tokenu ataku.",
                 _ => "Cel nie ma dostępnego łupu."
             };
+
+            if (resultText != null)
+                resultText.text = message;
 
             gameEngine.NotifyStateChanged();
         }
