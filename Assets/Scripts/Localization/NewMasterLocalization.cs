@@ -13,6 +13,8 @@ namespace NewMaster.Localization
             [NewMasterTextKeys.CoinsReward] = "+{0:N0} coins",
             [NewMasterTextKeys.EnergyReward] = "+{0} energy",
             [NewMasterTextKeys.VillageProgress] = "Village progress +1",
+            [NewMasterTextKeys.JackpotReward] = "JACKPOT! +{0:N0} coins",
+            [NewMasterTextKeys.DailyReward] = "Daily reward day {0}: +{1:N0} coins +{2} energy",
             [NewMasterTextKeys.NewWorld] = "New world: {0:000}",
             [NewMasterTextKeys.VillageUpgraded] = "Building {1}: level {0}",
             [NewMasterTextKeys.RaidLoot] = "+{0:N0} loot",
