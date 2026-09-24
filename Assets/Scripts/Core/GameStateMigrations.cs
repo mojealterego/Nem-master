@@ -44,9 +44,9 @@ namespace NewMaster.Core
             else if (legacy == "Postęp wioski +1")
                 state.Status.Set(NewMaster.Localization.NewMasterTextKeys.VillageProgress);
             else if (legacy == "Brak nagrody. Następny obrót może zmienić wszystko.")
-                state.Status.Set(NewMaster.Localization.NewTextKeys.NoReward);
+                state.Status.Set(NewMaster.Localization.NewMasterTextKeys.NoReward);
             else
-                state.Status.Set(NewMaster.Localization.NewTextKeys.GameReady);
+                state.Status.Set(NewMaster.Localization.NewMasterTextKeys.GameReady);
 
             state.StatusMessage = null;
         }
