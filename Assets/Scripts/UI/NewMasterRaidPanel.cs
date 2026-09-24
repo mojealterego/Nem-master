@@ -2,7 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using NewMaster.Core;
-using NewMaster.Raids;\nusing NewMaster.Localization;
+using NewMaster.Raids;
+using NewMaster.Localization;
 
 namespace NewMaster.UI
 {
