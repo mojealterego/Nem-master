@@ -1,4 +1,5 @@
 using NewMaster.Core;
+using NewMaster.Localization;
 
 namespace NewMaster.Village
 {
@@ -25,7 +26,11 @@ namespace NewMaster.Village
             var progress = FindOrCreate(villageState, building.buildingId);
             progress.Level++;
             gameState.CurrentVillageLevel = progress.Level;
-            gameState.StatusMessage = $"{building.displayName}: poziom {progress.Level}";
+            gameState.Status.Set(
+                NewMasterTextKeys.VillageUpgraded,
+                progress.Level,
+                building.buildingId,
+                building.localizationKey);
             return true;
         }
 
