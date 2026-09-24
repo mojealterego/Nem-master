@@ -18,6 +18,13 @@ namespace NewMaster.Core
                 state.Version = 2;
             }
 
+            if (state.Version < 4)
+            {
+                if (state.BattlePass == null)
+                    state.BattlePass = new BattlePassState();
+                state.Version = 4;
+            }
+
             if (state.Version < 3)
             {
                 MigrateLegacyStatus(state);
@@ -28,6 +35,9 @@ namespace NewMaster.Core
             state.CurrentWorldId = System.Math.Max(1, state.CurrentWorldId);
             state.CurrentVillageLevel = System.Math.Max(1, state.CurrentVillageLevel);
             state.Slots ??= new System.Collections.Generic.List<string> { "?", "?", "?" };
+
+            if (state.BattlePass == null)
+                state.BattlePass = new BattlePassState();
 
             if (string.IsNullOrWhiteSpace(state.Status.Key))
                 state.Status.Set(NewMaster.Localization.NewMasterTextKeys.GameReady);
