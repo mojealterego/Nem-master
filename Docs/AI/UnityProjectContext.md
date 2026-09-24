@@ -11,7 +11,7 @@
 - Render pipeline: Universal Render Pipeline package configured
 - Input: Unity Input System package configured
 - Addressables: configured as a planned content-delivery dependency
-- Localization: configured
+- Localization: Unity Localization package configured; runtime localization facade, stable key registry and language controller added; Locale/String Table asset creation still requires Unity Editor.
 - Unity Test Framework: configured
 
 ## Current architecture
