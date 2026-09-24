@@ -6,7 +6,6 @@ namespace NewMaster.Raids
     public sealed class RaidGameService
     {
         private readonly EconomyService economy = new();
-    {
         private readonly RaidService raidService = new();
 
         public RaidResult TryRaid(GameState gameState, RaidTarget target)
