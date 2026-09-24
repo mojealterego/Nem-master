@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NewMaster.Localization;
 using NewMaster.Progression;
 using NewMaster.Village;
 using NewMaster.Worlds;
@@ -107,22 +108,16 @@ namespace NewMaster.Core
             state.SpinsWon += outcome.Type == SpinOutcomeType.Nothing ? 0 : 1;
 
             if (outcome.VillageProgress > 0)
-            {
                 state.CurrentVillageLevel += outcome.VillageProgress;
-                state.StatusMessage = "Postęp wioski +1";
-            }
+
+            if (outcome.VillageProgress > 0)
+                state.Status.Set(NewMasterTextKeys.VillageProgress);
             else if (outcome.Coins > 0)
-            {
-                state.StatusMessage = $"+{outcome.Coins:N0} monet";
-            }
+                state.Status.Set(NewMasterTextKeys.CoinsReward, outcome.Coins);
             else if (outcome.Energy > 0)
-            {
-                state.StatusMessage = $"+{outcome.Energy} energii";
-            }
+                state.Status.Set(NewMasterTextKeys.EnergyReward, outcome.Energy);
             else
-            {
-                state.StatusMessage = "Brak nagrody. Następny obrót może zmienić wszystko.";
-            }
+                state.Status.Set(NewMasterTextKeys.NoReward);
 
             state.IsSpinning = false;
             Publish();
