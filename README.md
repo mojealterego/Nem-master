@@ -120,6 +120,7 @@ The repository now also contains:
 - analytics event buffering;
 - an authoritative-online gateway contract;
 - haptics service integration with persisted settings;
-- a production boot-scene generator for the Unity Editor.
+- a production boot-scene generator for the Unity Editor;
+- repository-level assembly/package validation with GitHub Actions, independent of the Unity license.
 
 These foundations are deliberately provider-agnostic. External authentication, backend authority, matchmaking, chat transport, Google Play Billing, advertising SDKs, analytics providers, remote Addressables hosting and final art/audio assets must be connected in their respective production environments.
