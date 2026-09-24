@@ -1,37 +1,42 @@
 # New Master — Unity Project Context
 
-## Identity
-- Project: **New Master**
+## Project summary
+**New Master** is an original next-generation Android/mobile game designed as a successor to the Coin Master-style progression formula, not a 1:1 clone. The repository is being developed as a data-driven game platform with an original economy, progression, worlds, village systems, social/live-ops layers and presentation.
+
+## Confirmed environment
 - Repository: `mojealterego/Nem-master`
-- Product direction: original next-generation mobile game and successor to the Coin Master-style progression formula.
-- This is **not a 1:1 clone**. Systems, economy, worlds, progression, presentation and architecture are intended to be original.
-- Project state: initialized from an empty repository.
-- Engine target: Unity 6.3 LTS.
-- Primary target: Android/mobile first.
-- Architectural direction: modular, data-driven mobile game architecture.
+- Product name: **New Master**
+- Unity target: 6000.3.0f1
+- Primary platform: Android/mobile
+- Render pipeline: Universal Render Pipeline package configured
+- Input: Unity Input System package configured
+- Addressables: configured as a planned content-delivery dependency
+- Localization: configured
+- Unity Test Framework: configured
 
-## Source basis
-The supplied analysis document is used as a technical design reference for the progression from a simple slot/spin prototype toward a production architecture with scalable worlds, persistence, networking, DI, analytics, monetization, visual effects and live content.
+## Current architecture
+- `Assets/Scripts/Core`: runtime state, spin outcomes/rules and game orchestration.
+- `Assets/Scripts/Worlds`: world definitions and scalable world catalog.
+- `Assets/Scripts/Progression`: world progression rules.
+- `Assets/Scripts/Village`: building data, village state and upgrade rules.
+- `Assets/Scripts/Bootstrap`: New Master composition/bootstrap entry point.
+- `Assets/Tests/EditMode`: deterministic gameplay tests.
+- Runtime assembly: `NewMaster.Runtime`.
+- Test assembly: `NewMaster.Tests.EditMode`.
 
-## Confirmed design goals
-- Slot/spin core loop.
-- Coins and energy.
-- Data-driven worlds; target architecture supports 365+ worlds without one-off gameplay code.
-- Village/building progression.
-- Shop/monetization layer.
-- Leaderboards/social systems.
-- Cloud synchronization and server authority as later production layers.
-- Addressable/on-demand content for scalable world assets.
-- Mobile-oriented performance and adaptive UI.
+## Gameplay foundation
+The current vertical foundation establishes:
+1. energy-gated spin;
+2. typed spin outcomes;
+3. deterministic reward resolution separated from Unity presentation;
+4. data-driven world progression;
+5. village building progression;
+6. a catalog architecture capable of scaling to large numbers of worlds without one-off gameplay code.
 
-## Initial architecture
-- `Assets/Scripts/Core`: runtime game state and engine.
-- `Assets/Scripts/Worlds`: ScriptableObject world definitions.
-- `Assets/Scripts/Bootstrap`: application composition/bootstrap.
-- Future modules: Save, Networking, Economy, Village, Social, LiveOps, UI, Audio, VFX, Analytics.
+The supplied design analysis supports the broader target of scalable worlds, persistence, networking, DI, analytics, monetization, visual effects and live content. Those systems are not yet represented as completed production implementations in this repository.
 
-## Validation
-This repository has not yet been opened in the Unity Editor from this chat surface. Compilation, scene validation, Play Mode behavior, device testing and Android builds remain unverified.
+## Validation status
+Repository-level implementation has been updated, but Unity Editor compilation, Play Mode, Android device testing and player build generation have not been executed from this chat surface. Do not treat the repository as release-ready until those validations are run.
 
 ## Naming rule
-Use **New Master** in product-facing text, documentation and UI. The repository slug remains `Nem-master` unless explicitly renamed separately.
+Use **New Master** in all product-facing text, UI and documentation. The repository slug remains `Nem-master` unless explicitly renamed.
