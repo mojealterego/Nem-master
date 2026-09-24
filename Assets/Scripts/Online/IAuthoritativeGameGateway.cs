@@ -7,5 +7,6 @@ namespace NewMaster.Online
         bool IsConnected { get; }
         void Connect(Action<bool> completed);
         void Disconnect();
+        void SubmitCommand(string commandType, string payload, Action<bool, string> completed);
     }
 }
