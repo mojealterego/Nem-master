@@ -62,8 +62,21 @@ namespace NewMaster.Localization
                     Get(status.Key, status.Amount, Get(status.Context)),
                 NewMasterTextKeys.NewWorld =>
                     Get(status.Key, Get(status.Context)),
+                NewMasterTextKeys.DailyReward =>
+                    Get(status.Key, status.Amount, status.SecondaryValue, ParseContextInt(status.Context)),
                 _ => Get(status.Key, status.Amount)
             };
+        }
+
+        private static int ParseContextInt(string value)
+        {
+            return int.TryParse(
+                value,
+                System.Globalization.NumberStyles.Integer,
+                System.Globalization.CultureInfo.InvariantCulture,
+                out var parsed)
+                ? parsed
+                : 0;
         }
 
         private static string GetFallback(string key, object[] args)
