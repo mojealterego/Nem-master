@@ -21,6 +21,7 @@ namespace NewMaster.Localization
             [NewMasterTextKeys.RaidShieldBlocked] = "Raid blocked by a shield.",
             [NewMasterTextKeys.RaidNoToken] = "No attack token.",
             [NewMasterTextKeys.RaidEmptyTarget] = "Target has no available loot.",
+            [NewMasterTextKeys.VillageRaidDamage] = "Village damage +{0}",
             [NewMasterTextKeys.CollectionComplete] = "Collection completed: +{0:N0}",
             [NewMasterTextKeys.CollectionIncomplete] = "Collection is not complete yet.",
             [NewMasterTextKeys.CoinsLabel] = "Coins",
