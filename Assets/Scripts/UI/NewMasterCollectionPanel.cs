@@ -10,7 +10,7 @@ namespace NewMaster.UI
     {
         [SerializeField] private GameEngine gameEngine;
         [SerializeField] private CollectionSet collection = new();
-        [SerializeField] private CollectionState collectionState = new();
+        [SerializeField] private CollectionState previewCollectionState = new();
         [SerializeField] private TMP_Text titleText;
         [SerializeField] private TMP_Text progressText;
         [SerializeField] private TMP_Text rewardText;
@@ -48,7 +48,8 @@ namespace NewMaster.UI
             if (gameEngine == null)
                 return;
 
-            var completed = collectionService.TryComplete(collection, collectionState, gameEngine.State);
+            var state = gameEngine.CollectionState ?? previewCollectionState;
+            var completed = collectionService.TryComplete(collection, state, gameEngine.State);
 
             if (resultText != null)
                 resultText.text = NewMasterLocalization.Get(gameEngine.State.Status);
@@ -69,7 +70,7 @@ namespace NewMaster.UI
 
             for (var i = 0; i < required; i++)
             {
-                if (collectionState.Owns(collection.RequiredCards[i]))
+                if ((gameEngine.CollectionState ?? previewCollectionState).Owns(collection.RequiredCards[i]))
                     owned++;
             }
 
