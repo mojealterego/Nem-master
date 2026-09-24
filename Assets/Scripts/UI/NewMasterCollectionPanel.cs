@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using NewMaster.Collections;
-using NewMaster.Core;
+using NewMaster.Core;\nusing NewMaster.Localization;
 
 namespace NewMaster.UI
 {
@@ -51,9 +51,7 @@ namespace NewMaster.UI
             var completed = collectionService.TryComplete(collection, collectionState, gameEngine.State);
 
             if (resultText != null)
-                resultText.text = completed
-                    ? $"Kolekcja ukończona: +{collection.CompletionReward:N0}"
-                    : "Kolekcja nie jest jeszcze kompletna.";
+                resultText.text = NewMasterLocalization.Get(gameEngine.State.Status);
 
             if (completed)
                 completeButton.interactable = false;
@@ -76,13 +74,13 @@ namespace NewMaster.UI
             }
 
             if (titleText != null)
-                titleText.text = collection.DisplayName ?? "Kolekcja";
+                titleText.text = collection.DisplayName ?? "Collection";
 
             if (progressText != null)
-                progressText.text = $"{owned}/{required} kart";
+                progressText.text = NewMasterLocalization.Get(NewMasterTextKeys.CollectionCards, owned, required);
 
             if (rewardText != null)
-                rewardText.text = $"Nagroda: {collection.CompletionReward:N0} monet";
+                rewardText.text = NewMasterLocalization.Get(NewMasterTextKeys.CollectionReward, collection.CompletionReward);
 
             if (completeButton != null)
                 completeButton.interactable = required > 0 && owned == required;
