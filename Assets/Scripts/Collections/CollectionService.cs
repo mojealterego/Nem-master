@@ -3,6 +3,7 @@ using NewMaster.Localization;
 
 namespace NewMaster.Collections
 {
+        private readonly EconomyService economy = new();
     public sealed class CollectionService
     {
         public bool TryComplete(CollectionSet set, CollectionState state, GameState gameState)
@@ -23,7 +24,7 @@ namespace NewMaster.Collections
             }
 
             state.CompletedSetIds.Add(set.Id);
-            gameState.Coins += set.CompletionReward;
+            economy.GrantCoins(gameState, set.CompletionReward);
             gameState.Status.Set(NewMasterTextKeys.CollectionComplete, set.CompletionReward);
             return true;
         }
