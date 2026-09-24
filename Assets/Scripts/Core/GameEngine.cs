@@ -57,6 +57,21 @@ namespace NewMaster.Core
         private readonly VillageService village = new();
         private readonly LocalSaveService saveService = new();
 
+        private void Start()
+        {
+            if (!LoadProgress())
+                Publish();
+        }
+
+        private void OnApplicationPause(bool paused)
+        {
+            if (paused)
+                SaveProgress();
+        }
+
+        private void OnApplicationQuit() => SaveProgress();
+
+
         public void Spin()
         {
             if (state.IsSpinning || state.Energy <= 0)
