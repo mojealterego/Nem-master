@@ -22,6 +22,7 @@ namespace NewMaster.Core
         public BattlePassState BattlePass = new();
         public GameSessionState Session = new();
         public DailyRewardState DailyReward = new();
+        public MasteryState Mastery = new();
         public List<string> Slots = new() { "?", "?", "?" };
 
         [Obsolete("Use Status instead.")]
