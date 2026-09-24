@@ -10,6 +10,7 @@ namespace NewMaster.Editor
     {
         private const int ExpectedWorldCount = 365;
         private const string WorldFolder = "Assets/NewMaster/Content/Worlds";
+        private const string CatalogPath = WorldFolder + "/WorldCatalog.asset";
 
         [MenuItem("New Master/Content/Validate World Catalog")]
         public static void ValidateWorldCatalog()
@@ -57,6 +58,39 @@ namespace NewMaster.Editor
                 {
                     Debug.LogError($"New Master: missing world definition {id:000}.");
                     errors++;
+                }
+            }
+
+            var catalog = AssetDatabase.LoadAssetAtPath<WorldCatalog>(CatalogPath);
+            if (catalog == null)
+            {
+                Debug.LogError($"New Master: missing catalog asset: {CatalogPath}");
+                errors++;
+            }
+            else
+            {
+                if (catalog.Worlds == null || catalog.Worlds.Count != ExpectedWorldCount)
+                {
+                    var actual = catalog.Worlds == null ? 0 : catalog.Worlds.Count;
+                    Debug.LogError($"New Master: catalog contains {actual} entries; expected {ExpectedWorldCount}.");
+                    errors++;
+                }
+
+                var catalogIds = new HashSet<int>();
+                foreach (var world in catalog.Worlds)
+                {
+                    if (world == null)
+                    {
+                        Debug.LogError("New Master: catalog contains a null world reference.");
+                        errors++;
+                        continue;
+                    }
+
+                    if (!catalogIds.Add(world.id))
+                    {
+                        Debug.LogError($"New Master: catalog contains duplicate world id {world.id}.");
+                        errors++;
+                    }
                 }
             }
 
