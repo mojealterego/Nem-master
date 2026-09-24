@@ -1,0 +1,10 @@
+{
+  "name": "NewMaster.Social",
+  "rootNamespace": "NewMaster.Social",
+  "references": ["NewMaster.Runtime"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "autoReferenced": true
+}
