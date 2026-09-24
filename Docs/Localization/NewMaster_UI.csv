@@ -398,3 +398,4 @@ event.starter,Starter Event,Wydarzenie startowe
 mission.spin_50,Spin 50 times,Zakręć 50 razy
 mission.spin_250,Spin 250 times,Zakręć 250 razy
 mission.jackpot_10,Hit 10 jackpots,Zdobądź 10 jackpotów
+village.raid_damage,Village damage +{0},Obrażenia wioski +{0}
