@@ -44,7 +44,8 @@ namespace NewMaster.Social
             if (guild == null || amount <= 0)
                 return false;
 
-            guild.CooperativeScore = System.Math.Min(int.MaxValue - amount, guild.CooperativeScore) + amount;
+            var safeAmount = System.Math.Min(amount, int.MaxValue);
+            guild.CooperativeScore = System.Math.Min(int.MaxValue - safeAmount, guild.CooperativeScore) + safeAmount;
             return true;
         }
     }
