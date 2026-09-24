@@ -58,5 +58,24 @@ namespace NewMaster.Tests
                 Object.DestroyImmediate(building);
             }
         }
+
+        [Test]
+        public void UpgradeCostSaturatesAtLongMaxValue()
+        {
+            var building = ScriptableObject.CreateInstance<BuildingDefinition>();
+            building.baseUpgradeCost = long.MaxValue;
+            building.costGrowth = 2f;
+
+            try
+            {
+                Assert.That(
+                    new VillageService().CalculateUpgradeCost(building, 2),
+                    Is.EqualTo(long.MaxValue));
+            }
+            finally
+            {
+                Object.DestroyImmediate(building);
+            }
+        }
     }
 }
