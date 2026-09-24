@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,10 +10,13 @@ namespace NewMaster.Localization
 {
     public sealed class NewMasterLanguageController : MonoBehaviour
     {
+        private const string SavedLocaleKey = "new_master.locale";
+
         [SerializeField] private string defaultLocaleCode = "en";
         [SerializeField] private List<string> supportedLocaleCodes = new() { "en", "pl" };
 
         public IReadOnlyList<string> SupportedLocaleCodes => supportedLocaleCodes;
+        public string CurrentLocaleCode => LocalizationSettings.SelectedLocale?.Identifier.Code;
         public event Action<Locale> LocaleChanged;
 
         private void Awake()
@@ -25,18 +29,19 @@ namespace NewMaster.Localization
             LocalizationSettings.SelectedLocaleChanged -= HandleLocaleChanged;
         }
 
+        private IEnumerator Start()
+        {
+            yield return LocalizationSettings.InitializationOperation;
+
+            var savedCode = PlayerPrefs.GetString(SavedLocaleKey, defaultLocaleCode);
+            if (!SetLanguageInternal(savedCode))
+                SetLanguageInternal(defaultLocaleCode);
+        }
+
         public void SetLanguage(string localeCode)
         {
-            if (string.IsNullOrWhiteSpace(localeCode))
-                return;
-
-            var locale = LocalizationSettings.AvailableLocales.Locales
-                .FirstOrDefault(x => string.Equals(x.Identifier.Code, localeCode, StringComparison.OrdinalIgnoreCase));
-
-            if (locale == null)
-                return;
-
-            LocalizationSettings.SelectedLocale = locale;
+            if (SetLanguageInternal(localeCode))
+                PlayerPrefs.Save();
         }
 
         public void SetLanguage(int index)
@@ -47,10 +52,27 @@ namespace NewMaster.Localization
             SetLanguage(supportedLocaleCodes[index]);
         }
 
-        private void Start()
+        private bool SetLanguageInternal(string localeCode)
         {
-            if (LocalizationSettings.SelectedLocale == null)
-                SetLanguage(defaultLocaleCode);
+            if (string.IsNullOrWhiteSpace(localeCode))
+                return false;
+
+            if (!supportedLocaleCodes.Any(code =>
+                    string.Equals(code, localeCode, StringComparison.OrdinalIgnoreCase)))
+                return false;
+
+            var locale = LocalizationSettings.AvailableLocales.Locales
+                .FirstOrDefault(x => string.Equals(
+                    x.Identifier.Code,
+                    localeCode,
+                    StringComparison.OrdinalIgnoreCase));
+
+            if (locale == null)
+                return false;
+
+            LocalizationSettings.SelectedLocale = locale;
+            PlayerPrefs.SetString(SavedLocaleKey, locale.Identifier.Code);
+            return true;
         }
 
         private void HandleLocaleChanged(Locale locale) =>
