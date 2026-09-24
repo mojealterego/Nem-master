@@ -6,7 +6,7 @@ namespace NewMaster.Collections
     public sealed class CollectionService
     {
         private readonly EconomyService economy = new();
-    {
+
         public bool TryComplete(CollectionSet set, CollectionState state, GameState gameState)
         {
             if (set == null || state == null || gameState == null)
