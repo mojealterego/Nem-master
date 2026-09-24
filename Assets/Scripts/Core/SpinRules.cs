@@ -13,12 +13,18 @@ namespace NewMaster.Core
             if (slots == null || slots.Count != 3)
                 throw new ArgumentException("New Master spin requires exactly three slots.", nameof(slots));
 
+            var safeBaseReward = Math.Max(0L, baseReward);
+
             if (slots[0] == slots[1] && slots[1] == slots[2])
             {
+                var jackpotReward = safeBaseReward > long.MaxValue / 5L
+                    ? long.MaxValue
+                    : safeBaseReward * 5L;
+
                 return new SpinOutcome(
                     slots,
                     SpinOutcomeType.Jackpot,
-                    coins: Math.Max(1000L, baseReward * 5L));
+                    coins: Math.Max(1000L, jackpotReward));
             }
 
             if (slots[0] == "Coin" && slots[1] == "Coin")
@@ -26,7 +32,7 @@ namespace NewMaster.Core
                 return new SpinOutcome(
                     slots,
                     SpinOutcomeType.Coins,
-                    coins: Math.Max(250L, baseReward));
+                    coins: Math.Max(250L, safeBaseReward));
             }
 
             if (slots[0] == "Energy" && slots[1] == "Energy")
