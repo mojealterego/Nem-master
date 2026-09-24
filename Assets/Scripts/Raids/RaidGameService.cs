@@ -22,13 +22,15 @@ namespace NewMaster.Raids
             var result = raidService.Resolve(target, true);
 
             if (result.Type != RaidResultType.Blocked || result.ShieldsConsumed > 0)
+            {
                 gameState.RaidTokens--;
+
+                if (gameState.Session != null && gameState.Session.RaidsThisSession < int.MaxValue)
+                    gameState.Session.RaidsThisSession++;
+            }
 
             if (result.Loot > 0)
             {
-                if (gameState.Session != null && gameState.Session.RaidsThisSession < int.MaxValue)
-                    gameState.Session.RaidsThisSession++;
-
                 var granted = economy.GrantCoins(gameState, result.Loot);
                 gameState.Status.Set(NewMasterTextKeys.RaidLoot, granted);
             }
