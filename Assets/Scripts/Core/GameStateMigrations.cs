@@ -46,7 +46,9 @@ namespace NewMaster.Core
             state.BattlePass.Normalize(int.MaxValue);
             state.Session.Normalize();
             state.DailyReward ??= new DailyRewardState();
+            state.Mastery ??= new MasteryState();
             state.DailyReward.Normalize();
+            state.Mastery.Normalize();
 
             if (string.IsNullOrWhiteSpace(state.Status.Key))
                 state.Status.Set(NewMaster.Localization.NewMasterTextKeys.GameReady);
