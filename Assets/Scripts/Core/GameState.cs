@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 
 namespace NewMaster.Core
 {
     [Serializable]
     public sealed class GameState
     {
-        public const int CurrentVersion = 5;
+        public const int CurrentVersion = 4;
 
         public int Version = CurrentVersion;
         public long Coins;
@@ -18,7 +19,7 @@ namespace NewMaster.Core
         public GameStatus Status = new();
         public BattlePassState BattlePass = new();
         public GameSessionState Session = new();
-        public System.Collections.Generic.List<string> Slots = new() { "?", "?", "?" };
+        public List<string> Slots = new() { "?", "?", "?" };
 
         [Obsolete("Use Status instead.")]
         public string StatusMessage;
