@@ -2,7 +2,8 @@
   "name": "NewMaster.Tests.EditMode",
   "rootNamespace": "NewMaster.Tests",
   "references": [
-    "NewMaster.Runtime"
+    "NewMaster.Runtime",
+    "NewMaster.UI"
   ],
   "includePlatforms": [
     "Editor"
