@@ -6,7 +6,7 @@ namespace NewMaster.Village
     public sealed class VillageService
     {
         private readonly EconomyService economy = new();
-    {
+
         public bool TryUpgrade(
             GameState gameState,
             VillageState villageState,
