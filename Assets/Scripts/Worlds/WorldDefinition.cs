@@ -8,6 +8,7 @@ namespace NewMaster.Worlds
     {
         [Min(1)] public int id = 1;
         public string worldName = "World 001";
+        public string localizationKey = "world.001";
         public Color themeColor = new(0.1f, 0.08f, 0.16f);
         [Min(0.1f)] public float rewardMultiplier = 1f;
         [Min(0)] public long unlockCost;
