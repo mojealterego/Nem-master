@@ -38,7 +38,7 @@ The current vertical foundation establishes:
 5. village building progression;
 6. a catalog architecture capable of scaling to large numbers of worlds without one-off gameplay code.
 
-The supplied design analysis supports the broader target of scalable worlds, persistence, networking, DI, analytics, monetization, visual effects and live content. Those systems are not yet represented as completed production implementations in this repository.
+The repository now also contains deterministic content-generation/validation tooling for 365 worlds, economy transaction primitives, social/live-ops/monetization/analytics/online contracts, and a production boot-scene generator. These are implementation foundations; external backend services, Unity Editor-generated content/assets and platform store integrations still require their respective environments.
 
 ## Validation status
 Repository-level implementation has been updated, but Unity Editor compilation, Play Mode, Android device testing and player build generation have not been executed from this chat surface. Do not treat the repository as release-ready until those validations are run.
