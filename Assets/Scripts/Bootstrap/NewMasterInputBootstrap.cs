@@ -19,6 +19,10 @@ namespace NewMaster.Bootstrap
                 eventSystem = inputRoot.AddComponent<EventSystem>();
             }
 
+            var legacyModule = eventSystem.GetComponent<StandaloneInputModule>();
+            if (legacyModule != null)
+                Destroy(legacyModule);
+
             if (eventSystem.GetComponent<InputSystemUIInputModule>() == null)
                 eventSystem.gameObject.AddComponent<InputSystemUIInputModule>();
         }
