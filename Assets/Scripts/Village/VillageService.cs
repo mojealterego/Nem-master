@@ -29,8 +29,7 @@ namespace NewMaster.Village
             gameState.Status.Set(
                 NewMasterTextKeys.VillageUpgraded,
                 progress.Level,
-                building.buildingId,
-                building.localizationKey);
+                building.buildingId);
             return true;
         }
 
