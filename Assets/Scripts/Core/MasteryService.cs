@@ -13,8 +13,11 @@ namespace NewMaster.Core
 
             state.Normalize();
             var before = state.Experience;
+            var beforeRank = GetRank(before);
             state.Experience = SaturatingAdd(state.Experience, amount);
             UpdateRank(state);
+            var reached = Math.Max(0, state.Rank - beforeRank);
+            state.LifetimeMilestones = SaturatingIntAdd(state.LifetimeMilestones, reached);
             return state.Experience - before;
         }
 
@@ -58,6 +61,17 @@ namespace NewMaster.Core
             state.Rank = Math.Max(state.Rank, GetRank(state.Experience));
             if (state.Rank > MaxRank)
                 state.Rank = MaxRank;
+        }
+
+        private static int SaturatingIntAdd(int current, int amount)
+        {
+            if (amount <= 0)
+                return current;
+
+            if (current > int.MaxValue - amount)
+                return int.MaxValue;
+
+            return current + amount;
         }
 
         private static long SaturatingAdd(long current, long amount)
