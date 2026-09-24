@@ -6,7 +6,7 @@ namespace NewMaster.Core
     [Serializable]
     public sealed class GameState
     {
-        public const int CurrentVersion = 2;
+        public const int CurrentVersion = 3;
 
         public int Version = CurrentVersion;
         public long Coins;
@@ -16,7 +16,11 @@ namespace NewMaster.Core
         public int SpinsWon;
         public int RaidTokens = 1;
         public bool IsSpinning;
-        public string StatusMessage = "New Master gotowy.";
+        public GameStatus Status = new();
         public List<string> Slots = new() { "?", "?", "?" };
+
+        // Kept for save compatibility with version 2 files.
+        [Obsolete("Use Status instead.")]
+        public string StatusMessage;
     }
 }
