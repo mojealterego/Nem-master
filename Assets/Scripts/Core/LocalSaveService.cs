@@ -9,6 +9,7 @@ namespace NewMaster.Core
         private const string FileName = "new_master_save.json";
         private const string VillageFileName = "new_master_village.json";
         private const string CollectionsFileName = "new_master_collections.json";
+        private const string BackupSuffix = ".bak";
 
         [Serializable]
         private sealed class SaveEnvelope
@@ -39,6 +40,7 @@ namespace NewMaster.Core
         {
             var path = GetPath(fileName);
             var temporaryPath = path + ".tmp";
+            var backupPath = path + BackupSuffix;
 
             var envelope = new SaveEnvelope
             {
@@ -52,6 +54,8 @@ namespace NewMaster.Core
 
                 if (File.Exists(path))
                 {
+                    TryCreateBackup(path, backupPath);
+
                     try
                     {
                         File.Replace(temporaryPath, path, null);
@@ -79,6 +83,23 @@ namespace NewMaster.Core
             value = default;
 
             var path = GetPath(fileName);
+            if (TryRead(path, out value))
+                return true;
+
+            var backupPath = path + BackupSuffix;
+            if (TryRead(backupPath, out value))
+            {
+                Debug.LogWarning($"New Master recovered save data from backup: {backupPath}");
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool TryRead<T>(string path, out T value)
+        {
+            value = default;
+
             if (!File.Exists(path))
                 return false;
 
@@ -91,10 +112,21 @@ namespace NewMaster.Core
                 value = JsonUtility.FromJson<T>(envelope.Payload);
                 return value != null;
             }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static void TryCreateBackup(string sourcePath, string backupPath)
+        {
+            try
+            {
+                File.Copy(sourcePath, backupPath, true);
+            }
             catch (Exception exception)
             {
-                Debug.LogWarning($"New Master save could not be loaded: {exception.Message}");
-                return false;
+                Debug.LogWarning($"New Master save backup could not be created: {exception.Message}");
             }
         }
 
