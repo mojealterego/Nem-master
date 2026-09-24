@@ -17,7 +17,7 @@ namespace NewMaster.Tests
                 Assert.That(catalog.Find(1), Is.Not.Null);
                 Assert.That(catalog.Find(365), Is.Not.Null);
                 Assert.That(catalog.Find(366), Is.Null);
-                Assert.That(catalog.Find(365).bossId, Is.EqualTo("boss.365"));
+                Assert.That(catalog.Find(360).bossId, Is.EqualTo("boss.360"));
                 Assert.That(catalog.Find(20).seasonalTag, Is.EqualTo("season.01"));
             }
             finally
