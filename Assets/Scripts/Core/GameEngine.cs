@@ -33,6 +33,7 @@ namespace NewMaster.Core
         private readonly VillageService village = new();
         private readonly LocalSaveService saveService = new();
         private readonly WorldRuleService worldRules = new();
+        private readonly DailyRewardService dailyRewards = new();
 
         public void SaveProgress()
         {
@@ -151,6 +152,19 @@ namespace NewMaster.Core
         }
 
         public void NotifyStateChanged() => Publish();
+
+        public bool TryClaimDailyReward()
+        {
+            EnsureState();
+
+            if (!dailyRewards.TryClaim(state, DateTimeOffset.UtcNow))
+                return false;
+
+            var reward = dailyRewards.Preview(state, DateTimeOffset.UtcNow);
+            state.Status.Set(NewMasterTextKeys.DailyReward, reward.Day, reward.Coins, reward.Energy);
+            Publish();
+            return true;
+        }
 
         public void AddEnergy(int amount)
         {
