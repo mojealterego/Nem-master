@@ -2,19 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NemMaster.Worlds;
+using NewMaster.Progression;
+using NewMaster.Village;
+using NewMaster.Worlds;
 
-namespace NemMaster.Core
+namespace NewMaster.Core
 {
     public sealed class GameEngine : MonoBehaviour
     {
         [SerializeField] private GameState state = new();
-        [SerializeField] private List<WorldDefinition> worlds = new();
+        [SerializeField] private WorldCatalog worldCatalog;
+        [SerializeField] private VillageState villageState = new();
+        [SerializeField] private float spinDuration = 0.8f;
 
         public GameState State => state;
+        public VillageState VillageState => villageState;
         public event Action<GameState> StateChanged;
 
         private readonly System.Random rng = new();
+        private readonly ProgressionService progression = new();
+        private readonly VillageService village = new();
 
         public void Spin()
         {
@@ -24,40 +31,22 @@ namespace NemMaster.Core
             StartCoroutine(SpinRoutine());
         }
 
-        private IEnumerator SpinRoutine()
+        public bool TryUnlockNextWorld()
         {
-            state.IsSpinning = true;
-            state.Energy--;
-            Publish();
+            var unlocked = progression.TryUnlockNextWorld(state, worldCatalog);
+            if (unlocked)
+                Publish();
 
-            yield return new WaitForSeconds(0.8f);
-
-            var symbols = GetCurrentSymbols();
-            state.Slots = new List<string>
-            {
-                symbols[rng.Next(symbols.Count)],
-                symbols[rng.Next(symbols.Count)],
-                symbols[rng.Next(symbols.Count)]
-            };
-
-            var reward = CalculateReward(state.Slots) * GetRewardMultiplier();
-            state.Coins += reward;
-            state.StatusMessage = reward > 0 ? $"+{reward:N0} monet!" : "Spróbuj ponownie.";
-            state.IsSpinning = false;
-            Publish();
+            return unlocked;
         }
 
-        public bool UnlockNextWorld()
+        public bool TryUpgradeBuilding(BuildingDefinition building)
         {
-            var next = worlds.Find(w => w.id == state.CurrentWorldId + 1);
-            if (next == null || state.Coins < next.unlockCost)
-                return false;
+            var upgraded = village.TryUpgrade(state, villageState, building);
+            if (upgraded)
+                Publish();
 
-            state.Coins -= next.unlockCost;
-            state.CurrentWorldId = next.id;
-            state.StatusMessage = $"Odblokowano: {next.worldName}";
-            Publish();
-            return true;
+            return upgraded;
         }
 
         public void AddEnergy(int amount)
@@ -66,29 +55,61 @@ namespace NemMaster.Core
             Publish();
         }
 
+        private IEnumerator SpinRoutine()
+        {
+            state.IsSpinning = true;
+            state.Energy--;
+            Publish();
+
+            yield return new WaitForSeconds(spinDuration);
+
+            var symbols = GetCurrentSymbols();
+            var slots = new List<string>
+            {
+                symbols[rng.Next(symbols.Count)],
+                symbols[rng.Next(symbols.Count)],
+                symbols[rng.Next(symbols.Count)]
+            };
+
+            var world = worldCatalog == null ? null : worldCatalog.Find(state.CurrentWorldId);
+            var baseReward = world == null ? 100L : Math.Max(100L, world.baseSpinReward);
+            var outcome = SpinRules.Resolve(slots, baseReward, world == null ? 1 : world.energyReward);
+
+            state.Slots = new List<string>(slots);
+            state.Coins += outcome.Coins;
+            state.Energy += outcome.Energy;
+            state.SpinsWon += outcome.Type == SpinOutcomeType.Nothing ? 0 : 1;
+
+            if (outcome.VillageProgress > 0)
+            {
+                state.CurrentVillageLevel += outcome.VillageProgress;
+                state.StatusMessage = "Postęp wioski +1";
+            }
+            else if (outcome.Coins > 0)
+            {
+                state.StatusMessage = $"+{outcome.Coins:N0} monet";
+            }
+            else if (outcome.Energy > 0)
+            {
+                state.StatusMessage = $"+{outcome.Energy} energii";
+            }
+            else
+            {
+                state.StatusMessage = "Brak nagrody. Następny obrót może zmienić wszystko.";
+            }
+
+            state.IsSpinning = false;
+            Publish();
+        }
+
         private List<string> GetCurrentSymbols()
         {
-            var world = worlds.Find(w => w.id == state.CurrentWorldId);
-            return world != null && world.symbols.Count > 0
-                ? world.symbols
-                : new List<string> { "Coin", "Crown", "Chest", "Energy", "Hammer" };
-        }
+            var world = worldCatalog == null ? null : worldCatalog.Find(state.CurrentWorldId);
 
-        private int CalculateReward(IReadOnlyList<string> result)
-        {
-            if (result.Count == 3 && result[0] == result[1] && result[1] == result[2])
-                return 1000;
+            if (world != null && world.symbols.Count > 0)
+                return world.symbols;
 
-            if (result.Count == 3 && result[0] == "Coin" && result[1] == "Coin")
-                return 250;
-
-            return 0;
-        }
-
-        private long GetRewardMultiplier()
-        {
-            var world = worlds.Find(w => w.id == state.CurrentWorldId);
-            return world == null ? 1L : Math.Max(1L, Mathf.RoundToInt(world.rewardMultiplier));
+            return new List<string> { "Coin", "Crown", "Chest", "Energy", "Hammer" };
         }
 
         private void Publish() => StateChanged?.Invoke(state);
