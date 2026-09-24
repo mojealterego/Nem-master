@@ -61,6 +61,7 @@ namespace NewMaster.Core
         private readonly ProgressionService progression = new();
         private readonly VillageService village = new();
         private readonly LocalSaveService saveService = new();
+        private readonly WorldRuleService worldRules = new();
 
         private void Awake()
         {
@@ -133,7 +134,11 @@ namespace NewMaster.Core
 
         public void AddEnergy(int amount)
         {
-            state.Energy = Mathf.Max(0, state.Energy + amount);
+            if (amount >= 0)
+                economy.GrantEnergy(state, amount);
+            else
+                state.Energy = Mathf.Max(0, state.Energy + amount);
+
             Publish();
         }
 
@@ -154,7 +159,7 @@ namespace NewMaster.Core
             };
 
             var world = worldCatalog == null ? null : worldCatalog.Find(state.CurrentWorldId);
-            var baseReward = world == null ? 100L : Math.Max(100L, (long)Math.Round(world.baseSpinReward * world.rewardMultiplier));
+            var baseReward = world == null ? 100L : Math.Max(100L, worldRules.ApplyRewardMultiplier(world, world.baseSpinReward));
             var outcome = SpinRules.Resolve(slots, baseReward, world == null ? 1 : world.energyReward);
 
             state.Slots = new List<string>(slots);
@@ -182,7 +187,7 @@ namespace NewMaster.Core
         {
             var world = worldCatalog == null ? null : worldCatalog.Find(state.CurrentWorldId);
 
-            if (world != null && world.symbols.Count > 0)
+            if (world != null && world.symbols != null && world.symbols.Count > 0)
                 return world.symbols;
 
             return new List<string> { "Coin", "Crown", "Chest", "Energy", "Hammer" };
