@@ -72,7 +72,7 @@ namespace NewMaster.Core
             };
 
             var world = worldCatalog == null ? null : worldCatalog.Find(state.CurrentWorldId);
-            var baseReward = world == null ? 100L : Math.Max(100L, world.baseSpinReward);
+            var baseReward = world == null ? 100L : Math.Max(100L, (long)Math.Round(world.baseSpinReward * world.rewardMultiplier));
             var outcome = SpinRules.Resolve(slots, baseReward, world == null ? 1 : world.energyReward);
 
             state.Slots = new List<string>(slots);
