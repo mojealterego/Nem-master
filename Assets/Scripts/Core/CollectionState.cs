@@ -22,5 +22,32 @@ namespace NewMaster.Collections
 
         public bool OwnsArtifact(string artifactId) =>
             !string.IsNullOrWhiteSpace(artifactId) && OwnedArtifactIds.Contains(artifactId);
+
+        public void Normalize()
+        {
+            OwnedCardIds = NormalizeIds(OwnedCardIds);
+            CompletedSetIds = NormalizeIds(CompletedSetIds);
+            OwnedPetIds = NormalizeIds(OwnedPetIds);
+            OwnedArtifactIds = NormalizeIds(OwnedArtifactIds);
+        }
+
+        private static List<string> NormalizeIds(List<string> source)
+        {
+            var normalized = new List<string>();
+            if (source == null)
+                return normalized;
+
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+            for (var i = 0; i < source.Count; i++)
+            {
+                var value = source[i];
+                if (string.IsNullOrWhiteSpace(value) || !seen.Add(value))
+                    continue;
+
+                normalized.Add(value);
+            }
+
+            return normalized;
+        }
     }
 }
