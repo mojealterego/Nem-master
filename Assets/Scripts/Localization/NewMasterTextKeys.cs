@@ -26,5 +26,8 @@ namespace NewMaster.Localization
         public const string RaidShieldsLabel = "hud.raid_shields";
         public const string CollectionCards = "collection.cards";
         public const string CollectionReward = "collection.reward";
+        public const string LiveOpsNoEvent = "liveops.no_event";
+        public const string LiveOpsMissionProgress = "liveops.mission_progress";
+        public const string LiveOpsMissionClaimed = "liveops.mission_claimed";
     }
 }
