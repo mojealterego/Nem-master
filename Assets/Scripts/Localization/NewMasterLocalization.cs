@@ -36,7 +36,11 @@ namespace NewMaster.Localization
             [NewMasterTextKeys.LiveOpsMissionProgress] = "{0} · {1:N0}/{2:N0}",
             [NewMasterTextKeys.LiveOpsMissionClaimed] = "{0} · CLAIMED",
             ["world.001"] = "World 001",
-            ["building.main"] = "Main Building"
+            ["building.main"] = "Main Building",
+            ["event.starter"] = "Starter Event",
+            ["mission.spin_50"] = "Spin 50 times",
+            ["mission.spin_250"] = "Spin 250 times",
+            ["mission.jackpot_10"] = "Hit 10 jackpots"
         };
 
         public static string Get(string key, params object[] args)
