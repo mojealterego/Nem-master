@@ -21,3 +21,6 @@ hud.raid_loot,Loot: {0:N0},Łup: {0:N0}
 hud.raid_shields,Shields: {0},Tarcze: {0}
 collection.cards,{0}/{1} cards,{0}/{1} kart
 collection.reward,Reward: {0:N0} coins,Nagroda: {0:N0} monet
+
+world.001,World 001,Świat 001
+building.main,Main Building,Budynek główny
