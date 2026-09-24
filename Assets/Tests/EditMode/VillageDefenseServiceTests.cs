@@ -20,5 +20,16 @@ namespace NewMaster.Tests
             Assert.That(village.GetDamage(1), Is.EqualTo(0));
             Assert.That(state.Coins, Is.EqualTo(900));
         }
+
+        [Test]
+        public void DamageSaturatesInsteadOfOverflowing()
+        {
+            var village = new VillageState();
+            var service = new VillageDefenseService();
+
+            Assert.That(service.ApplyDamage(village, 1, int.MaxValue), Is.True);
+            Assert.That(service.ApplyDamage(village, 1, 1), Is.False);
+            Assert.That(village.GetDamage(1), Is.EqualTo(int.MaxValue));
+        }
     }
 }
