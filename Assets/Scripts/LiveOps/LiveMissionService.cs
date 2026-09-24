@@ -21,9 +21,9 @@ namespace NewMaster.LiveOps
             if (string.IsNullOrWhiteSpace(state.MissionId))
                 state.MissionId = definition.missionId;
 
-            state.Progress = System.Math.Min(
-                definition.target,
-                state.Progress + amount);
+            state.Progress = (int)System.Math.Min(
+                (long)definition.target,
+                (long)state.Progress + amount);
             return true;
         }
 
