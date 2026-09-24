@@ -16,6 +16,12 @@ namespace NewMaster.LiveOps
         private DateTime startUtc => ParseUtc(startUtcIso);
         private DateTime endUtc => ParseUtc(endUtcIso);
 
+        public void SetWindowUtc(DateTime start, DateTime end)
+        {
+            startUtcIso = start.ToUniversalTime().ToString("o");
+            endUtcIso = end.ToUniversalTime().ToString("o");
+        }
+
         public bool IsActive(DateTime utcNow) =>
             utcNow.Kind == DateTimeKind.Utc &&
             StartUtc < EndUtc &&
