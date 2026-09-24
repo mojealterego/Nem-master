@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using NewMaster.Core;
+using NewMaster.Localization;
 
 namespace NewMaster.UI
 {
@@ -62,19 +63,19 @@ namespace NewMaster.UI
                 return;
 
             if (coinsText != null)
-                coinsText.text = state.Coins.ToString("N0");
+                coinsText.text = NewMasterLocalization.Get(NewMasterTextKeys.CoinsLabel) + ": " + state.Coins.ToString("N0");
 
             if (energyText != null)
-                energyText.text = state.Energy.ToString();
+                energyText.text = NewMasterLocalization.Get(NewMasterTextKeys.EnergyLabel) + ": " + state.Energy;
 
             if (worldText != null)
-                worldText.text = $"WORLD {state.CurrentWorldId:000}";
+                worldText.text = NewMasterLocalization.Get(NewMasterTextKeys.WorldLabel, state.CurrentWorldId);
 
             if (villageText != null)
-                villageText.text = $"WIOSKA {state.CurrentVillageLevel}";
+                villageText.text = NewMasterLocalization.Get(NewMasterTextKeys.VillageLabel, state.CurrentVillageLevel);
 
             if (statusText != null)
-                statusText.text = state.StatusMessage;
+                statusText.text = NewMasterLocalization.Get(state.StatusMessage);
 
             if (slotTexts == null)
                 return;
