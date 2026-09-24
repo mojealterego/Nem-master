@@ -3,6 +3,7 @@
   "rootNamespace": "NewMaster.UI",
   "references": [
     "NewMaster.Runtime",
+    "NewMaster.LiveOps",
     "Unity.InputSystem",
     "NewMaster.Raids",
     "NewMaster.Collections",
