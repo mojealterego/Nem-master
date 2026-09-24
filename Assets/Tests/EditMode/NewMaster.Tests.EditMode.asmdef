@@ -4,6 +4,8 @@
   "references": [
     "NewMaster.Runtime",
     "NewMaster.UI",
+    "NewMaster.Raids",
+    "NewMaster.Collections",
     "NewMaster.Social",
     "NewMaster.LiveOps",
     "NewMaster.Monetization",
