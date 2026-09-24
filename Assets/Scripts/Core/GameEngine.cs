@@ -38,8 +38,8 @@ namespace NewMaster.Core
         {
             EnsureState();
             GameStateMigrations.Normalize(state);
-            villageState?.Normalize();
-            collectionState?.Normalize();
+            villageState.Normalize();
+            collectionState.Normalize();
             saveService.Save(state, GameState.CurrentVersion);
             saveService.SaveVillage(villageState, GameState.CurrentVersion);
             saveService.SaveCollections(collectionState, GameState.CurrentVersion);
@@ -66,6 +66,7 @@ namespace NewMaster.Core
 
             collectionState = loadedCollections;
             collectionState.Normalize();
+            BeginSessionIfNeeded();
             Publish();
             return true;
         }
@@ -84,7 +85,10 @@ namespace NewMaster.Core
         private void Start()
         {
             if (!LoadProgress())
+            {
+                BeginSessionIfNeeded();
                 Publish();
+            }
 
             autoSaveCoroutine = StartCoroutine(AutoSaveRoutine());
         }
@@ -137,7 +141,11 @@ namespace NewMaster.Core
             EnsureState();
             var upgraded = village.TryUpgrade(state, villageState, building);
             if (upgraded)
+            {
+                if (state.Session != null && state.Session.BuildingsUpgradedThisSession < int.MaxValue)
+                    state.Session.BuildingsUpgradedThisSession++;
                 Publish();
+            }
 
             return upgraded;
         }
@@ -188,17 +196,26 @@ namespace NewMaster.Core
             var baseReward = world == null
                 ? 100L
                 : Math.Max(100L, worldRules.ApplyRewardMultiplier(world, world.baseSpinReward));
-            var outcome = SpinRules.Resolve(
-                slots,
-                baseReward,
-                world == null ? 1 : world.energyReward);
+            var outcome = SpinRules.Resolve(slots, baseReward, world == null ? 1 : world.energyReward);
 
             state.Slots = new List<string>(slots);
-            economy.GrantCoins(state, outcome.Coins);
+
+            var grantedCoins = economy.GrantCoins(state, outcome.Coins);
             economy.GrantEnergy(state, outcome.Energy);
-            state.SpinsWon = outcome.Type == SpinOutcomeType.Nothing
-                ? state.SpinsWon
-                : (state.SpinsWon == int.MaxValue ? int.MaxValue : state.SpinsWon + 1);
+
+            if (outcome.Type != SpinOutcomeType.Nothing && state.SpinsWon < int.MaxValue)
+                state.SpinsWon++;
+
+            if (state.Session != null)
+            {
+                if (state.Session.SpinsThisSession < int.MaxValue)
+                    state.Session.SpinsThisSession++;
+
+                if (grantedCoins > 0)
+                    state.Session.CoinsEarnedThisSession = AddClamped(
+                        state.Session.CoinsEarnedThisSession,
+                        grantedCoins);
+            }
 
             if (outcome.VillageProgress > 0)
             {
@@ -233,8 +250,29 @@ namespace NewMaster.Core
         private void EnsureState()
         {
             state ??= new GameState();
+            state.Session ??= new GameSessionState();
             villageState ??= new VillageState();
             collectionState ??= new CollectionState();
+        }
+
+        private void BeginSessionIfNeeded()
+        {
+            EnsureState();
+            if (state.Session.SessionId > 0)
+                return;
+
+            var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            state.Session.Reset(now, now);
+        }
+
+        private static int AddClamped(int current, long amount)
+        {
+            if (amount <= 0)
+                return current;
+
+            return (int)Math.Min(
+                int.MaxValue,
+                (long)current + amount);
         }
 
         private void Publish() => StateChanged?.Invoke(state);
