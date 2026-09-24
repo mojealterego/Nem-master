@@ -8,6 +8,7 @@ namespace NewMaster.Localization
         public const string EnergyReward = "game.energy_reward";
         public const string VillageProgress = "game.village_progress";
         public const string JackpotReward = "game.jackpot_reward";
+        public const string DailyReward = "game.daily_reward";
         public const string NewWorld = "world.new_world";
         public const string VillageUpgraded = "village.upgraded";
         public const string RaidLoot = "raid.loot";
