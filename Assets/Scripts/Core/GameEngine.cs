@@ -29,6 +29,9 @@ namespace NewMaster.Core
 
         public void SaveProgress()
         {
+            GameStateMigrations.Normalize(state);
+            villageState?.Normalize();
+            collectionState?.Normalize();
             saveService.Save(state, GameState.CurrentVersion);
             saveService.SaveVillage(villageState, GameState.CurrentVersion);
             saveService.SaveCollections(collectionState, GameState.CurrentVersion);
@@ -47,11 +50,13 @@ namespace NewMaster.Core
                 loadedVillage = new VillageState();
 
             villageState = loadedVillage;
+            villageState.Normalize();
 
             if (!saveService.TryLoadCollections<CollectionState>(out var loadedCollections))
                 loadedCollections = new CollectionState();
 
             collectionState = loadedCollections;
+            collectionState.Normalize();
             Publish();
             return true;
         }
