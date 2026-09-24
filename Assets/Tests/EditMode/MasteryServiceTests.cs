@@ -15,6 +15,7 @@ namespace NewMaster.Tests.EditMode
 
             Assert.That(state.Experience, Is.EqualTo(500));
             Assert.That(state.Rank, Is.EqualTo(1));
+            Assert.That(state.LifetimeMilestones, Is.EqualTo(1));
         }
 
         [Test]
