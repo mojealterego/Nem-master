@@ -8,7 +8,8 @@ Configure these GitHub Actions secrets before running the Android build:
 
 - `UNITY_EMAIL`
 - `UNITY_PASSWORD`
-- `UNITY_SERIAL`
+- `UNITY_SERIAL` (or use `UNITY_LICENSE` for a Unity license-file based activation path)
+- `UNITY_LICENSE` (optional alternative to serial activation)
 
 They are injected into the GameCI build runner and are not committed to the repository.
 
