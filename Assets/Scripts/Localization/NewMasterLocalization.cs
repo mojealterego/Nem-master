@@ -49,6 +49,7 @@ namespace NewMaster.Localization
             [NewMasterTextKeys.SocialContributionRejected] = "Contribution rejected.",
             [NewMasterTextKeys.SocialNoNewMilestone] = "No new milestone.",
             [NewMasterTextKeys.SocialRewardUnavailable] = "Reward could not be granted.",
+            [NewMasterTextKeys.SocialMilestoneReached] = "Milestone reached: {0}",
             [NewMasterTextKeys.SocialMilestoneReward] = "Milestone {0}: +{1:N0} coins",
             ["world.001"] = "World 001",
             ["building.main"] = "Main Building",
