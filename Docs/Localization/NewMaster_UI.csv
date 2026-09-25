@@ -404,3 +404,12 @@ raid.counter_attack_ready,Counter-attack ready: {0:N0} bounty,Gotowy kontratak: 
 boss.attack,Boss damage {0:N0} · {1:N0} HP remaining,Obrażenia bossa {0:N0} · pozostało {1:N0} PŻ
 boss.defeated,WORLD BOSS DEFEATED,BOSS ŚWIATA POKONANY
 boss.claimed,Boss reward: +{0:N0} coins,Nagroda za bossa: +{0:N0} monet
+social.members,Members: {0},Członkowie: {0}
+social.coop_score,Co-op score: {0:N0},Wynik współpracy: {0:N0}
+social.contribution,Your contribution: {0:N0},Twój wkład: {0:N0}
+social.next_milestone,Next milestone: {0:N0},Następny kamień milowy: {0:N0}
+social.member_not_found,Member not found.,Nie znaleziono członka.
+social.contribution_rejected,Contribution rejected.,Wkład odrzucony.
+social.no_new_milestone,No new milestone.,Brak nowego kamienia milowego.
+social.reward_unavailable,Reward could not be granted.,Nie można przyznać nagrody.
+social.milestone_reward,Milestone {0}: +{1:N0} coins,Kamień milowy {0}: +{1:N0} monet
