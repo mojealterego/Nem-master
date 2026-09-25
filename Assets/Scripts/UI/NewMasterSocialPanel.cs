@@ -25,6 +25,8 @@ namespace NewMaster.UI
         [SerializeField] private long milestoneBaseReward = 5000;
 
         private SocialPersistenceState state;
+
+        public SocialPersistenceState PersistenceState => state;
         private SocialPersistenceService persistence;
         private GuildCoopService guildCoop;
         private EconomyService economy;
@@ -146,7 +148,7 @@ namespace NewMaster.UI
             Refresh();
         }
 
-        private void Refresh()
+        public void Refresh()
         {
             if (state?.Guild == null)
                 return;
