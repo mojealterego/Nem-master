@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -94,10 +95,20 @@ namespace NewMaster.Editor
                 }
             }
 
+            try
+            {
+                NewMasterBrandingEditor.ValidateBrandAssetOrThrow();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogError("New Master: branding validation failed: " + exception.Message);
+                errors++;
+            }
+
             if (errors == 0 && ids.Count == ExpectedWorldCount)
-                Debug.Log($"New Master: world catalog validation passed ({ExpectedWorldCount} worlds).");
+                Debug.Log($"New Master: content validation passed ({ExpectedWorldCount} worlds + branding).");
             else
-                Debug.LogError($"New Master: world catalog validation found {errors} issue(s).");
+                Debug.LogError($"New Master: content validation found {errors} issue(s).");
         }
     }
 }
