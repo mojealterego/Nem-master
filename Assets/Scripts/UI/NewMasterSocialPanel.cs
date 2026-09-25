@@ -1,12 +1,14 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using NewMaster.Core;
 using NewMaster.Social;
 
 namespace NewMaster.UI
 {
     public sealed class NewMasterSocialPanel : MonoBehaviour
     {
+        [SerializeField] private GameEngine gameEngine;
         [SerializeField] private TMP_Text guildNameText;
         [SerializeField] private TMP_Text memberText;
         [SerializeField] private TMP_Text scoreText;
@@ -24,11 +26,13 @@ namespace NewMaster.UI
         private SocialPersistenceState state;
         private SocialPersistenceService persistence;
         private GuildCoopService guildCoop;
+        private EconomyService economy;
 
         private void Awake()
         {
             persistence = new SocialPersistenceService();
             guildCoop = new GuildCoopService();
+            economy = new EconomyService();
             state = new SocialPersistenceState();
             persistence.TryLoad(out state);
 
@@ -97,40 +101,66 @@ namespace NewMaster.UI
 
         private void ClaimMilestone()
         {
+            if (gameEngine == null)
+            {
+                resultText.text = "Game engine is not assigned.";
+                return;
+            }
+
             var milestone = Mathf.Max(1, state.Guild.CooperativeScore / Mathf.Max(1, milestoneStep));
-            var result = guildCoop.TryClaimMilestone(
+            var preview = guildCoop.PreviewMilestoneClaim(
                 state.Guild,
                 milestone,
                 Mathf.Max(1, milestoneStep),
                 Mathf.Max(1L, milestoneBaseReward));
 
-            if (!result.Claimed)
+            if (!preview.Claimed)
             {
                 resultText.text = "No new milestone.";
                 return;
             }
 
+            var granted = economy.GrantCoins(gameEngine.State, preview.Reward);
+            if (granted <= 0)
+            {
+                resultText.text = "Reward could not be granted.";
+                return;
+            }
+
+            guildCoop.CommitMilestoneClaim(state.Guild, preview.Milestone);
+            gameEngine.SaveProgress();
             persistence.Save(state);
-            resultText.text = $"Milestone {result.Milestone}: +{result.Reward} coins";
+            resultText.text = $"Milestone {preview.Milestone}: +{granted} coins";
             Refresh();
         }
 
         private void Refresh()
         {
-            guildNameText.text = string.IsNullOrWhiteSpace(state.Guild.Name) ? "Guild" : state.Guild.Name;
-            memberText.text = $"Members: {state.Guild.MemberIds.Count}";
-            scoreText.text = $"Co-op score: {state.Guild.CooperativeScore}";
-            contributionText.text =
-                $"Your contribution: {state.Guild.GetContribution(state.Social.PlayerId)}";
+            if (state?.Guild == null)
+                return;
 
-            var nextMilestone = (state.Guild.CooperativeScore / Mathf.Max(1, milestoneStep)) + 1;
-            milestoneText.text = $"Next milestone: {nextMilestone * Mathf.Max(1, milestoneStep)}";
+            if (guildNameText != null)
+                guildNameText.text = string.IsNullOrWhiteSpace(state.Guild.Name) ? "Guild" : state.Guild.Name;
+            if (memberText != null)
+                memberText.text = $"Members: {state.Guild.MemberIds.Count}";
+            if (scoreText != null)
+                scoreText.text = $"Co-op score: {state.Guild.CooperativeScore}";
+            if (contributionText != null)
+                contributionText.text =
+                    $"Your contribution: {state.Guild.GetContribution(state.Social.PlayerId)}";
+
+            var step = Mathf.Max(1, milestoneStep);
+            var nextMilestone = (state.Guild.CooperativeScore / step) + 1;
+            if (milestoneText != null)
+                milestoneText.text = $"Next milestone: {nextMilestone * step}";
 
             if (claimMilestoneButton != null)
+            {
+                var currentMilestone = state.Guild.CooperativeScore / step;
                 claimMilestoneButton.interactable =
-                    state.Guild.CooperativeScore >= milestoneStep &&
-                    !state.Guild.HasClaimedMilestone(
-                        Mathf.Max(1, state.Guild.CooperativeScore / Mathf.Max(1, milestoneStep)));
+                    currentMilestone > 0 &&
+                    guildCoop.CanClaimMilestone(state.Guild, currentMilestone, step);
+            }
         }
 
         private void Save()
