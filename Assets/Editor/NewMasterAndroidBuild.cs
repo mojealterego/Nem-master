@@ -26,6 +26,9 @@ namespace NewMaster.Editor
             var previousBundleSetting = EditorUserBuildSettings.buildAppBundle;
             try
             {
+                NewMasterBrandingEditor.ValidateBrandAssetOrThrow();
+                NewMasterBrandingEditor.ApplyAndroidAppIconOrThrow();
+
                 EditorUserBuildSettings.buildAppBundle = appBundle;
                 var report = BuildPipeline.BuildPlayer(
                     new[] { ScenePath }, outputPath, BuildTarget.Android, BuildOptions.None);
