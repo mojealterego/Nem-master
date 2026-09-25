@@ -98,11 +98,8 @@ namespace NewMaster.UI
             persistence.Save(state);
             if (result.MilestoneReached > 0)
                 resultText.text = NewMasterLocalization.Get(
-                    NewMasterTextKeys.SocialMilestoneReward,
-                    state.Guild.CooperativeScore / Mathf.Max(1, milestoneStep),
-                    guildCoop.GetMilestoneReward(
-                        state.Guild.CooperativeScore / Mathf.Max(1, milestoneStep),
-                        Mathf.Max(1L, milestoneBaseReward)));
+                    NewMasterTextKeys.SocialMilestoneReached,
+                    state.Guild.CooperativeScore / Mathf.Max(1, milestoneStep));
             else
                 resultText.text = NewMasterLocalization.Get(
                     NewMasterTextKeys.SocialContribution,
