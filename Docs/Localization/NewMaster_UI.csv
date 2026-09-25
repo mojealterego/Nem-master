@@ -399,3 +399,8 @@ mission.spin_50,Spin 50 times,Zakręć 50 razy
 mission.spin_250,Spin 250 times,Zakręć 250 razy
 mission.jackpot_10,Hit 10 jackpots,Zdobądź 10 jackpotów
 village.raid_damage,Village damage +{0},Obrażenia wioski +{0}
+raid.detailed,+{0:N0} loot · defense {1}% · village damage {2},+{0:N0} łupu · obrona {1}% · obrażenia wioski {2}
+raid.counter_attack_ready,Counter-attack ready: {0:N0} bounty,Gotowy kontratak: nagroda {0:N0}
+boss.attack,Boss damage {0:N0} · {1:N0} HP remaining,Obrażenia bossa {0:N0} · pozostało {1:N0} PŻ
+boss.defeated,WORLD BOSS DEFEATED,BOSS ŚWIATA POKONANY
+boss.claimed,Boss reward: +{0:N0} coins,Nagroda za bossa: +{0:N0} monet
