@@ -28,4 +28,18 @@ and uploads them as the `NewMaster-Android-APK` and `NewMaster-Android-AAB` work
 - configured New Master boot scene
 - final APK artifact creation
 
+## Branding
+
+The approved New Master icon is stored at `Assets/NewMaster/Branding/NewMasterIcon.jpg`.
+
+Before a release build, open the project in Unity Editor and run:
+
+`New Master/Branding/Validate Brand Asset`
+
+then:
+
+`New Master/Branding/Apply Android App Icon`
+
+The icon-setting operation is intentionally editor-only and is not executed by runtime code.
+
 A successful CI build is still not a substitute for physical Android device testing, Play Mode verification and performance profiling.
