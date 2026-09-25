@@ -48,6 +48,7 @@ namespace NewMaster.Core
         private readonly MasteryPerkService masteryPerks = new();
         private readonly LiveOpsProgressService liveOps = new();
         private readonly WorldBossService worldBoss = new();
+        private readonly NewMasterHapticsService haptics = new();
 
         public void SaveProgress()
         {
@@ -392,6 +393,7 @@ namespace NewMaster.Core
                 state.Status.Set(NewMasterTextKeys.NoReward);
 
             state.IsSpinning = false;
+            haptics.Pulse();
             Publish();
         }
 
