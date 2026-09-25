@@ -9,5 +9,8 @@ namespace NewMaster.Raids
         public string DisplayName;
         public long AvailableLoot;
         public int ShieldCount;
+        public int DefenseScore;
+        public int CounterAttackPower = 100;
+        public long CounterAttackLoot;
     }
 }
