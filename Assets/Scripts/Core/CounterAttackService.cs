@@ -11,9 +11,12 @@ namespace NewMaster.Core
 
             var bounty = state.Bounty;
             var granted = economy.GrantCoins(gameState, bounty);
+            if (granted <= 0)
+                return false;
+
             state.Clear();
             gameState.Status.Set(NewMaster.Localization.NewMasterTextKeys.RaidLoot, granted);
-            return granted > 0;
+            return true;
         }
 
         public long Preview(CounterAttackState state) =>
