@@ -35,5 +35,14 @@ namespace NewMaster.Localization
         public const string LiveOpsNoEvent = "liveops.no_event";
         public const string LiveOpsMissionProgress = "liveops.mission_progress";
         public const string LiveOpsMissionClaimed = "liveops.mission_claimed";
+        public const string SocialMembers = "social.members";
+        public const string SocialCoopScore = "social.coop_score";
+        public const string SocialContribution = "social.contribution";
+        public const string SocialNextMilestone = "social.next_milestone";
+        public const string SocialMemberNotFound = "social.member_not_found";
+        public const string SocialContributionRejected = "social.contribution_rejected";
+        public const string SocialNoNewMilestone = "social.no_new_milestone";
+        public const string SocialRewardUnavailable = "social.reward_unavailable";
+        public const string SocialMilestoneReward = "social.milestone_reward";
     }
 }
