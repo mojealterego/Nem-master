@@ -9,6 +9,7 @@ namespace NewMaster.Core
         private const string FileName = "new_master_save.json";
         private const string VillageFileName = "new_master_village.json";
         private const string CollectionsFileName = "new_master_collections.json";
+        private const string SocialFileName = "new_master_social.json";
         private const string BackupSuffix = ".bak";
 
         [Serializable]
@@ -35,6 +36,12 @@ namespace NewMaster.Core
 
         public bool TryLoadCollections<T>(out T value) =>
             TryLoad(out value, CollectionsFileName);
+
+        public void SaveSocial<T>(T value, int version) =>
+            Save(value, version, SocialFileName);
+
+        public bool TryLoadSocial<T>(out T value) =>
+            TryLoad(out value, SocialFileName);
 
         private static void Save<T>(T value, int version, string fileName)
         {
