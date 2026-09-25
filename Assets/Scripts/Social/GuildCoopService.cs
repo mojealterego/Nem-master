@@ -37,7 +37,10 @@ namespace NewMaster.Social
             if (milestone <= 0 || baseReward <= 0)
                 return 0;
 
-            return Math.Min(long.MaxValue, baseReward * (long)milestone);
+            if (milestone > long.MaxValue / baseReward)
+                return long.MaxValue;
+
+            return baseReward * milestone;
         }
     }
 }
