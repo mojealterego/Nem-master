@@ -24,6 +24,8 @@ namespace NewMaster.Core
         public DailyRewardState DailyReward = new();
         public MasteryState Mastery = new();
         public LiveOpsProgressState LiveOps = new();
+        public WorldBossState WorldBoss = new();
+        public CounterAttackState CounterAttack = new();
         public List<string> Slots = new() { "?", "?", "?" };
 
         [Obsolete("Use Status instead.")]
