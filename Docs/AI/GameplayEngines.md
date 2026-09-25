@@ -21,6 +21,8 @@
 - GuildCoopService adds bounded cooperative score contributions.
 - Milestone crossings are reported deterministically.
 - Milestone rewards scale safely without integer overflow.
+- Guild contribution leaderboards provide deterministic ranking with stable player-ID tie breaking.
+- Leaderboard snapshots are bounded and presentation-ready without pretending to be a server-authoritative online ranking.
 - The service remains in the Social assembly so the Core assembly does not acquire a dependency cycle.
 
 ## Persistence
