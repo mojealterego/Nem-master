@@ -414,3 +414,6 @@ social.no_new_milestone,No new milestone.,Brak nowego kamienia milowego.
 social.reward_unavailable,Reward could not be granted.,Nie można przyznać nagrody.
 social.milestone_reached,Milestone reached: {0},Osiągnięto kamień milowy: {0}
 social.milestone_reward,Milestone {0}: +{1:N0} coins,Kamień milowy {0}: +{1:N0} monet
+social.leaderboard_title,Guild leaderboard,Ranking gildii
+social.leaderboard_empty,No leaderboard entries.,Brak wpisów rankingu.
+social.leaderboard_unavailable,Leaderboard unavailable.,Ranking niedostępny.
