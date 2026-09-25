@@ -77,6 +77,10 @@ namespace NewMaster.Localization
                     Get(status.Key, Get(status.Context)),
                 NewMasterTextKeys.DailyReward =>
                     Get(status.Key, status.Amount, status.SecondaryValue, ParseContextInt(status.Context)),
+                NewMasterTextKeys.RaidDetailed =>
+                    Get(status.Key, status.Amount, status.SecondaryValue, ParseContextInt(status.Context)),
+                NewMasterTextKeys.WorldBossAttack =>
+                    Get(status.Key, status.Amount, status.SecondaryValue),
                 _ => Get(status.Key, status.Amount)
             };
         }
