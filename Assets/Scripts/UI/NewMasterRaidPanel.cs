@@ -50,9 +50,14 @@ namespace NewMaster.UI
                 return;
 
             var result = raidService.TryRaidDetailed(gameEngine.State, target);
-            if (result.Succeeded && result.CounterAttackBounty > 0)
+            if (result.Succeeded)
             {
-                gameEngine.State.CounterAttack.Set(target.TargetId, result.CounterAttackBounty);
+                if (result.VillageDamage > 0)
+                    gameEngine.ApplyRaidDamageToVillage(result.VillageDamage);
+
+                if (result.CounterAttackBounty > 0)
+                    gameEngine.State.CounterAttack.Set(target.TargetId, result.CounterAttackBounty);
+
                 gameEngine.State.Status.Set(
                     NewMasterTextKeys.RaidDetailed,
                     result.Loot,
