@@ -18,12 +18,12 @@ namespace NewMaster.Social
                 return;
 
             state.Normalize();
-            saveService.Save(state, Version);
+            saveService.SaveSocial(state, Version);
         }
 
         public bool TryLoad(out SocialPersistenceState state)
         {
-            if (!saveService.TryLoad(out state) || state == null)
+            if (!saveService.TryLoadSocial(out state) || state == null)
             {
                 state = new SocialPersistenceState();
                 state.Normalize();
