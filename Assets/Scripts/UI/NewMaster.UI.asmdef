@@ -4,6 +4,7 @@
   "references": [
     "NewMaster.Runtime",
     "NewMaster.LiveOps",
+    "NewMaster.Social",
     "Unity.InputSystem",
     "NewMaster.Raids",
     "NewMaster.Collections",
