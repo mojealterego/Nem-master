@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,6 +28,7 @@ namespace NewMaster.UI
         private SocialPersistenceState state;
 
         public SocialPersistenceState PersistenceState => state;
+        public event Action StateChanged;
         private SocialPersistenceService persistence;
         private GuildCoopService guildCoop;
         private EconomyService economy;
@@ -182,6 +184,8 @@ namespace NewMaster.UI
                     currentMilestone > 0 &&
                     guildCoop.CanClaimMilestone(state.Guild, currentMilestone, step);
             }
+
+            StateChanged?.Invoke();
         }
 
         private void SetResult(string key, params object[] args)
