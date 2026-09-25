@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using NewMaster.Core;
+using NewMaster.Localization;
 using NewMaster.Social;
 
 namespace NewMaster.UI
@@ -78,7 +79,7 @@ namespace NewMaster.UI
 
             if (!state.Guild.HasMember(playerId))
             {
-                resultText.text = "Member not found.";
+                SetResult(NewMasterTextKeys.SocialMemberNotFound);
                 return;
             }
 
@@ -90,12 +91,23 @@ namespace NewMaster.UI
 
             if (result.ScoreAdded <= 0)
             {
-                resultText.text = "Contribution rejected.";
+                SetResult(NewMasterTextKeys.SocialContributionRejected);
                 return;
             }
 
             persistence.Save(state);
-            resultText.text = $"+{result.ScoreAdded} contribution";
+            if (result.MilestoneReached > 0)
+                resultText.text = NewMasterLocalization.Get(
+                    NewMasterTextKeys.SocialMilestoneReward,
+                    state.Guild.CooperativeScore / Mathf.Max(1, milestoneStep),
+                    guildCoop.GetMilestoneReward(
+                        state.Guild.CooperativeScore / Mathf.Max(1, milestoneStep),
+                        Mathf.Max(1L, milestoneBaseReward)));
+            else
+                resultText.text = NewMasterLocalization.Get(
+                    NewMasterTextKeys.SocialContribution,
+                    result.ScoreAdded);
+
             Refresh();
         }
 
@@ -103,7 +115,7 @@ namespace NewMaster.UI
         {
             if (gameEngine == null)
             {
-                resultText.text = "Game engine is not assigned.";
+                SetResult(NewMasterTextKeys.SocialRewardUnavailable);
                 return;
             }
 
@@ -116,21 +128,24 @@ namespace NewMaster.UI
 
             if (!preview.Claimed)
             {
-                resultText.text = "No new milestone.";
+                SetResult(NewMasterTextKeys.SocialNoNewMilestone);
                 return;
             }
 
             var granted = economy.GrantCoins(gameEngine.State, preview.Reward);
             if (granted <= 0)
             {
-                resultText.text = "Reward could not be granted.";
+                SetResult(NewMasterTextKeys.SocialRewardUnavailable);
                 return;
             }
 
             guildCoop.CommitMilestoneClaim(state.Guild, preview.Milestone);
             gameEngine.SaveProgress();
             persistence.Save(state);
-            resultText.text = $"Milestone {preview.Milestone}: +{granted} coins";
+            resultText.text = NewMasterLocalization.Get(
+                NewMasterTextKeys.SocialMilestoneReward,
+                preview.Milestone,
+                granted);
             Refresh();
         }
 
@@ -142,17 +157,24 @@ namespace NewMaster.UI
             if (guildNameText != null)
                 guildNameText.text = string.IsNullOrWhiteSpace(state.Guild.Name) ? "Guild" : state.Guild.Name;
             if (memberText != null)
-                memberText.text = $"Members: {state.Guild.MemberIds.Count}";
+                memberText.text = NewMasterLocalization.Get(
+                    NewMasterTextKeys.SocialMembers,
+                    state.Guild.MemberIds.Count);
             if (scoreText != null)
-                scoreText.text = $"Co-op score: {state.Guild.CooperativeScore}";
+                scoreText.text = NewMasterLocalization.Get(
+                    NewMasterTextKeys.SocialCoopScore,
+                    state.Guild.CooperativeScore);
             if (contributionText != null)
-                contributionText.text =
-                    $"Your contribution: {state.Guild.GetContribution(state.Social.PlayerId)}";
+                contributionText.text = NewMasterLocalization.Get(
+                    NewMasterTextKeys.SocialContribution,
+                    state.Guild.GetContribution(state.Social.PlayerId));
 
             var step = Mathf.Max(1, milestoneStep);
             var nextMilestone = (state.Guild.CooperativeScore / step) + 1;
             if (milestoneText != null)
-                milestoneText.text = $"Next milestone: {nextMilestone * step}";
+                milestoneText.text = NewMasterLocalization.Get(
+                    NewMasterTextKeys.SocialNextMilestone,
+                    nextMilestone * step);
 
             if (claimMilestoneButton != null)
             {
@@ -161,6 +183,12 @@ namespace NewMaster.UI
                     currentMilestone > 0 &&
                     guildCoop.CanClaimMilestone(state.Guild, currentMilestone, step);
             }
+        }
+
+        private void SetResult(string key, params object[] args)
+        {
+            if (resultText != null)
+                resultText.text = NewMasterLocalization.Get(key, args);
         }
 
         private void Save()
