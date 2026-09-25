@@ -6,20 +6,31 @@ namespace NewMaster.Raids
     public sealed class RaidGameService
     {
         private readonly EconomyService economy = new();
-        private readonly RaidService raidService = new();
+        private readonly RaidEngineService raidEngine = new();
 
         public RaidResult TryRaid(GameState gameState, RaidTarget target)
         {
+            var engineResult = TryRaidDetailed(gameState, target);
+            return new RaidResult
+            {
+                Type = engineResult.Type,
+                Loot = engineResult.Loot,
+                ShieldsConsumed = engineResult.ShieldsConsumed
+            };
+        }
+
+        public RaidEngineResult TryRaidDetailed(GameState gameState, RaidTarget target)
+        {
             if (gameState == null)
-                return new RaidResult { Type = RaidResultType.Blocked };
+                return new RaidEngineResult { Type = RaidResultType.Blocked };
 
             if (gameState.RaidTokens <= 0)
             {
                 gameState.Status.Set(NewMasterTextKeys.RaidNoToken);
-                return new RaidResult { Type = RaidResultType.Blocked };
+                return new RaidEngineResult { Type = RaidResultType.Blocked };
             }
 
-            var result = raidService.Resolve(target, true);
+            var result = raidEngine.Resolve(target, true);
 
             if (result.Type != RaidResultType.Blocked || result.ShieldsConsumed > 0)
             {
