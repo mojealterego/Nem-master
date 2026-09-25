@@ -238,6 +238,11 @@ namespace NewMaster.Core
             if (world == null || string.IsNullOrWhiteSpace(world.bossId))
                 return false;
 
+            var maxHealth = Math.Max(
+                worldBossBaseHealth,
+                worldBossBaseHealth + (long)state.CurrentWorldId * 250L);
+            worldBoss.EnsureBoss(state.WorldBoss, world.bossId, maxHealth);
+
             var reward = Math.Max(
                 worldBossBaseReward,
                 worldBossBaseReward + (long)state.CurrentWorldId * 500L);
