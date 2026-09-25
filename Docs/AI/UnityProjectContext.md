@@ -20,6 +20,8 @@
 - `Assets/Scripts/Progression`: world progression rules.
 - `Assets/Scripts/Village`: building data, village state and upgrade rules.
 - `Assets/Scripts/Bootstrap`: New Master composition/bootstrap entry point and mobile Input System UI bootstrap.
+- `Assets/Scripts/UI`: HUD, presentation panels, branding presentation component.
+- `Assets/NewMaster/Branding`: approved game icon asset.
 - `Assets/Tests/EditMode`: deterministic gameplay tests.
 - Runtime assembly: `NewMaster.Runtime`.
 - Test assembly: `NewMaster.Tests.EditMode`.
@@ -28,8 +30,6 @@
 The runtime no longer uses player-facing Polish status strings as gameplay state. GameStatus stores a stable localization key plus typed numeric arguments, with migration support from the previous save format. English and Polish translation source is maintained in `Docs/Localization/NewMaster_UI.csv`. The Unity String Table named `New Master UI` still needs to be created/imported in the Editor.
 
 ## Gameplay foundation
-The current runtime foundation also includes persisted language/settings, collection persistence, mobile lifecycle save hooks and an Android safe-area UI component.
-
 The current vertical foundation establishes:
 1. energy-gated spin;
 2. typed spin outcomes;
@@ -39,6 +39,9 @@ The current vertical foundation establishes:
 6. a catalog architecture capable of scaling to large numbers of worlds without one-off gameplay code.
 
 The repository now also contains deterministic content-generation/validation tooling for 365 worlds, economy transaction primitives, social/live-ops/monetization/analytics/online contracts, a production boot-scene generator, runtime 365-world fallback content, persisted-state normalization, and repository-level assembly/package validation. These are implementation foundations; external backend services, Unity Editor-generated content/assets and platform store integrations still require their respective environments.
+
+## Presentation / branding layer
+The supplied New Master game icon is stored under `Assets/NewMaster/Branding/NewMasterIcon.jpg`. The Editor-only `New Master/Branding/Apply Android App Icon` command applies the asset to Unity's Android application icon slots using the Unity 6 PlayerSettings API. `NewMasterBranding` is a small uGUI presentation component for projecting the approved product identity into scenes without taking ownership of gameplay state. See `Docs/AI/Branding.md`.
 
 ## Validation status
 Repository-level implementation has been updated, but Unity Editor compilation, Play Mode, Android device testing and player build generation have not been executed from this chat surface. Do not treat the repository as release-ready until those validations are run.
