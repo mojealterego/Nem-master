@@ -89,6 +89,38 @@ namespace NewMaster.Editor
             var spinButtonObject = CreateButton("SPIN", hudObject.transform, new Vector2(0.2f, 0.25f), new Vector2(0.8f, 0.39f));
             var spinButton = spinButtonObject.GetComponent<Button>();
 
+            var socialObject = CreateChild("Guild Co-op", safeObject.transform);
+            var socialRect = socialObject.GetComponent<RectTransform>();
+            socialRect.anchorMin = new Vector2(0.05f, 0.01f);
+            socialRect.anchorMax = new Vector2(0.95f, 0.22f);
+            socialRect.offsetMin = Vector2.zero;
+            socialRect.offsetMax = Vector2.zero;
+
+            var socialPanel = socialObject.AddComponent<NewMasterSocialPanel>();
+            var guildName = CreateText("Guild", socialObject.transform, new Vector2(0.02f, 0.72f), new Vector2(0.48f, 1f));
+            var memberCount = CreateText("Members", socialObject.transform, new Vector2(0.52f, 0.72f), new Vector2(0.98f, 1f));
+            var scoreText = CreateText("Co-op Score", socialObject.transform, new Vector2(0.02f, 0.45f), new Vector2(0.48f, 0.70f));
+            var contributionText = CreateText("Contribution", socialObject.transform, new Vector2(0.52f, 0.45f), new Vector2(0.98f, 0.70f));
+            var milestoneText = CreateText("Next Milestone", socialObject.transform, new Vector2(0.02f, 0.22f), new Vector2(0.48f, 0.44f));
+            var resultText = CreateText("Social Result", socialObject.transform, new Vector2(0.52f, 0.22f), new Vector2(0.98f, 0.44f));
+
+            var contributeButtonObject = CreateButton("CONTRIBUTE", socialObject.transform, new Vector2(0.02f, 0.01f), new Vector2(0.48f, 0.20f));
+            var claimButtonObject = CreateButton("CLAIM", socialObject.transform, new Vector2(0.52f, 0.01f), new Vector2(0.98f, 0.20f));
+
+            var serializedSocial = new SerializedObject(socialPanel);
+            serializedSocial.FindProperty("gameEngine").objectReferenceValue = engine;
+            serializedSocial.FindProperty("guildNameText").objectReferenceValue = guildName;
+            serializedSocial.FindProperty("memberText").objectReferenceValue = memberCount;
+            serializedSocial.FindProperty("scoreText").objectReferenceValue = scoreText;
+            serializedSocial.FindProperty("contributionText").objectReferenceValue = contributionText;
+            serializedSocial.FindProperty("milestoneText").objectReferenceValue = milestoneText;
+            serializedSocial.FindProperty("resultText").objectReferenceValue = resultText;
+            serializedSocial.FindProperty("contributeButton").objectReferenceValue =
+                contributeButtonObject.GetComponent<Button>();
+            serializedSocial.FindProperty("claimMilestoneButton").objectReferenceValue =
+                claimButtonObject.GetComponent<Button>();
+            serializedSocial.ApplyModifiedPropertiesWithoutUndo();
+
             var serializedHud = new SerializedObject(hud);
             serializedHud.FindProperty("gameEngine").objectReferenceValue = engine;
             serializedHud.FindProperty("coinsText").objectReferenceValue = coins;
