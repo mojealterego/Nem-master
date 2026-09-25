@@ -45,5 +45,8 @@ namespace NewMaster.Localization
         public const string SocialRewardUnavailable = "social.reward_unavailable";
         public const string SocialMilestoneReached = "social.milestone_reached";
         public const string SocialMilestoneReward = "social.milestone_reward";
+        public const string SocialLeaderboardTitle = "social.leaderboard_title";
+        public const string SocialLeaderboardEmpty = "social.leaderboard_empty";
+        public const string SocialLeaderboardUnavailable = "social.leaderboard_unavailable";
     }
 }
