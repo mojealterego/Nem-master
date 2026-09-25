@@ -48,9 +48,13 @@ namespace NewMaster.Core
             state.DailyReward ??= new DailyRewardState();
             state.Mastery ??= new MasteryState();
             state.LiveOps ??= new LiveOpsProgressState();
+            state.WorldBoss ??= new WorldBossState();
+            state.CounterAttack ??= new CounterAttackState();
             state.DailyReward.Normalize();
             state.Mastery.Normalize();
             state.LiveOps.Normalize();
+            state.WorldBoss.Normalize();
+            state.CounterAttack.Normalize();
 
             if (string.IsNullOrWhiteSpace(state.Status.Key))
                 state.Status.Set(NewMaster.Localization.NewMasterTextKeys.GameReady);
