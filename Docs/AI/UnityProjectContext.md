@@ -47,7 +47,7 @@ The supplied New Master game icon is stored under `Assets/NewMaster/Branding/New
 Repository-level implementation has been updated, but Unity Editor compilation, Play Mode, Android device testing and player build generation have not been executed from this chat surface. Do not treat the repository as release-ready until those validations are run.
 
 ## Gameplay engines added
-The repository now also contains a Raid Engine 2.0 layer with bounded defense mitigation and counter-attack state, a persisted World Boss engine integrated with the current world, and a Social-assembly Guild/Co-op contribution service with milestone handling. These systems have deterministic EditMode tests. They remain repository-level implementations until Unity Editor, runtime, online authority and device validation are executed in their respective environments.
+The repository now also contains a Raid Engine 2.0 layer with bounded defense mitigation and counter-attack state, a persisted World Boss engine integrated with the current world, and a Social-assembly Guild/Co-op contribution service with milestone handling and a deterministic local guild-contribution leaderboard projection. These systems have deterministic EditMode tests. They remain repository-level implementations until Unity Editor, runtime, online authority and device validation are executed in their respective environments.
 
 ## Naming rule
 Use **New Master** in all product-facing text, UI and documentation. The repository slug remains `Nem-master` unless explicitly renamed.
