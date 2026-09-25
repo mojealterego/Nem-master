@@ -14,6 +14,19 @@ namespace NewMaster.UI
 
         private readonly LeaderboardService leaderboard = new();
 
+        private void OnEnable()
+        {
+            if (socialPanel != null)
+                socialPanel.StateChanged += Refresh;
+            Refresh();
+        }
+
+        private void OnDisable()
+        {
+            if (socialPanel != null)
+                socialPanel.StateChanged -= Refresh;
+        }
+
         public void Refresh()
         {
             if (socialPanel == null || entriesText == null)
