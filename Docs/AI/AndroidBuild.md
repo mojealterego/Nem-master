@@ -16,9 +16,9 @@ They are injected into the GameCI build runner and are not committed to the repo
 
 The workflow produces:
 
-`Builds/NewMaster-Android.apk`
+`Builds/NewMaster-Android.apk` and `Builds/NewMaster-Android.aab`
 
-and uploads it as the `NewMaster-Android-APK` workflow artifact.
+and uploads them as the `NewMaster-Android-APK` and `NewMaster-Android-AAB` workflow artifacts.
 
 ## What the pipeline validates
 
