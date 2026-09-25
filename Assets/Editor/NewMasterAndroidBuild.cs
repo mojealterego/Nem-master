@@ -12,15 +12,34 @@ namespace NewMaster.Editor
 
         public static void BuildAndroidCi()
         {
-            const string outputPath = "Builds/NewMaster-Android.apk";
+            Build("Builds/NewMaster-Android.apk", false);
+        }
+
+        public static void BuildAndroidBundleCi()
+        {
+            Build("Builds/NewMaster-Android.aab", true);
+        }
+
+        private static void Build(string outputPath, bool appBundle)
+        {
             Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
-            var report = BuildPipeline.BuildPlayer(
-                new[] { ScenePath }, outputPath, BuildTarget.Android, BuildOptions.None);
+            var previousBundleSetting = EditorUserBuildSettings.buildAppBundle;
+            try
+            {
+                EditorUserBuildSettings.buildAppBundle = appBundle;
+                var report = BuildPipeline.BuildPlayer(
+                    new[] { ScenePath }, outputPath, BuildTarget.Android, BuildOptions.None);
 
-            if (report.summary.result != BuildResult.Succeeded)
-                throw new BuildFailedException("New Master Android build failed: " + report.summary.result);
+                if (report.summary.result != BuildResult.Succeeded)
+                    throw new BuildFailedException(
+                        "New Master Android build failed: " + report.summary.result);
 
-            Debug.Log("New Master Android build succeeded: " + outputPath);
+                Debug.Log("New Master Android build succeeded: " + outputPath);
+            }
+            finally
+            {
+                EditorUserBuildSettings.buildAppBundle = previousBundleSetting;
+            }
         }
     }
 }
