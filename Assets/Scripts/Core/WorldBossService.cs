@@ -24,7 +24,9 @@ namespace NewMaster.Core
 
             var applied = Math.Min(damage, state.Health);
             state.Health -= applied;
-            state.PersonalContribution = Math.Min(long.MaxValue, state.PersonalContribution + applied);
+            state.PersonalContribution = state.PersonalContribution > long.MaxValue - applied
+                ? long.MaxValue
+                : state.PersonalContribution + applied;
             if (state.Health == 0)
                 state.Defeated = true;
             return applied;
