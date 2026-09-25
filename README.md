@@ -15,6 +15,7 @@ New Master is being built around these principles:
 - **Online-first foundations** for cloud persistence, server-authoritative economy and anti-cheat.
 - **Live game architecture** for seasons, events, missions and rotating content.
 - **Android-first performance** with scalable presentation and content delivery.
+- **Coherent product identity** with an approved game icon and explicit Android branding tooling.
 
 ## Current implemented foundation
 
@@ -31,6 +32,7 @@ New Master is being built around these principles:
 - Runtime assembly boundary.
 - EditMode gameplay tests.
 - New Master bootstrap entry point.
+- Product branding asset and Unity Editor Android icon application tooling.
 
 ## Target architecture
 
@@ -62,7 +64,7 @@ Authentication · Cloud Save · Server authority · Anti-cheat · Matchmaking
 Shop · Bundles · Battle Pass · Rewarded Ads · Google Play Billing
 
 ### PRESENTATION
-Characters · Animation · VFX · Shaders · Audio · Haptics · Cinematic events
+Characters · Animation · VFX · Shaders · Audio · Haptics · Cinematic events · Product branding
 
 ## Roadmap
 
@@ -121,6 +123,8 @@ The repository now also contains:
 - an authoritative-online gateway contract;
 - haptics service integration with persisted settings;
 - a production boot-scene generator for the Unity Editor;
+- the supplied New Master game icon under `Assets/NewMaster/Branding/`;
+- explicit Unity 6 Android icon application and brand validation tooling;
 - repository-level assembly/package validation with GitHub Actions, independent of the Unity license.
 
 These foundations are deliberately provider-agnostic. External authentication, backend authority, matchmaking, chat transport, Google Play Billing, advertising SDKs, analytics providers, remote Addressables hosting and final art/audio assets must be connected in their respective production environments.
