@@ -8,7 +8,7 @@ on:
 jobs:
   build-android:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,4 +31,24 @@ jobs:
         with:
           name: NewMaster-Android-APK
           path: Builds/NewMaster-Android.apk
+          if-no-files-found: error
+
+      - name: Build Android AAB
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        with:
+          projectPath: .
+          unityVersion: 6000.3.0f1
+          targetPlatform: Android
+          buildMethod: NewMaster.Editor.NewMasterAndroidBuild.BuildAndroidBundleCi
+          versioning: None
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: NewMaster-Android-AAB
+          path: Builds/NewMaster-Android.aab
           if-no-files-found: error
