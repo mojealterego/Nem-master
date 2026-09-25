@@ -23,6 +23,9 @@ namespace NewMaster.Core
         [SerializeField, Min(0)] private int streakBonusAtThree = 250;
         [SerializeField, Min(0)] private int streakBonusAtFive = 750;
         [SerializeField, Min(0)] private int streakBonusAtTen = 2500;
+        [SerializeField, Min(1)] private long worldBossBaseHealth = 10000;
+        [SerializeField, Min(1)] private long worldBossDamagePerAttack = 250;
+        [SerializeField, Min(1)] private long worldBossBaseReward = 5000;
 
         private Coroutine autoSaveCoroutine;
         private WorldCatalog runtimeWorldCatalog;
@@ -44,6 +47,7 @@ namespace NewMaster.Core
         private readonly MasteryService mastery = new();
         private readonly MasteryPerkService masteryPerks = new();
         private readonly LiveOpsProgressService liveOps = new();
+        private readonly WorldBossService worldBoss = new();
 
         public void SaveProgress()
         {
@@ -189,6 +193,60 @@ namespace NewMaster.Core
                 Publish();
 
             return repaired;
+        }
+
+        public bool TryAttackWorldBoss()
+        {
+            EnsureState();
+            var world = worldCatalog == null ? null : worldCatalog.Find(state.CurrentWorldId);
+            if (world == null || string.IsNullOrWhiteSpace(world.bossId) || state.Energy <= 0)
+                return false;
+
+            var maxHealth = Math.Max(
+                worldBossBaseHealth,
+                worldBossBaseHealth + (long)state.CurrentWorldId * 250L);
+            worldBoss.EnsureBoss(state.WorldBoss, world.bossId, maxHealth);
+
+            if (state.WorldBoss.Defeated)
+                return false;
+
+            state.Energy--;
+            var damage = Math.Max(
+                1L,
+                worldBossDamagePerAttack + (long)state.CurrentWorldId * 10L);
+            var applied = worldBoss.Attack(state.WorldBoss, damage);
+            if (applied <= 0)
+            {
+                state.Energy++;
+                return false;
+            }
+
+            state.Status.Set(
+                state.WorldBoss.Defeated
+                    ? NewMasterTextKeys.WorldBossDefeated
+                    : NewMasterTextKeys.WorldBossAttack,
+                applied,
+                state.WorldBoss.Health);
+            Publish();
+            return true;
+        }
+
+        public bool TryClaimWorldBossReward()
+        {
+            EnsureState();
+            var world = worldCatalog == null ? null : worldCatalog.Find(state.CurrentWorldId);
+            if (world == null || string.IsNullOrWhiteSpace(world.bossId))
+                return false;
+
+            var reward = Math.Max(
+                worldBossBaseReward,
+                worldBossBaseReward + (long)state.CurrentWorldId * 500L);
+            if (!worldBoss.TryClaim(state.WorldBoss, reward, economy, state))
+                return false;
+
+            state.Status.Set(NewMasterTextKeys.WorldBossClaimed, reward);
+            Publish();
+            return true;
         }
 
         public void NotifyStateChanged() => Publish();
@@ -352,6 +410,8 @@ namespace NewMaster.Core
             state.LiveOps ??= new LiveOpsProgressState();
             state.LiveOps.Normalize();
             state.Session ??= new GameSessionState();
+            state.WorldBoss ??= new WorldBossState();
+            state.CounterAttack ??= new CounterAttackState();
             villageState ??= new VillageState();
             collectionState ??= new CollectionState();
         }
