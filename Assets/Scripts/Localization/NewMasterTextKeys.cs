@@ -15,7 +15,12 @@ namespace NewMaster.Localization
         public const string RaidShieldBlocked = "raid.shield_blocked";
         public const string RaidNoToken = "raid.no_token";
         public const string RaidEmptyTarget = "raid.empty_target";
+        public const string RaidDetailed = "raid.detailed";
         public const string VillageRaidDamage = "village.raid_damage";
+        public const string CounterAttackReady = "raid.counter_attack_ready";
+        public const string WorldBossAttack = "boss.attack";
+        public const string WorldBossDefeated = "boss.defeated";
+        public const string WorldBossClaimed = "boss.claimed";
         public const string CollectionComplete = "collection.complete";
         public const string CollectionIncomplete = "collection.incomplete";
         public const string CoinsLabel = "hud.coins";
