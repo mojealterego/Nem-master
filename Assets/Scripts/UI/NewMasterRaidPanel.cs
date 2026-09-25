@@ -53,7 +53,11 @@ namespace NewMaster.UI
             if (result.Succeeded && result.CounterAttackBounty > 0)
             {
                 gameEngine.State.CounterAttack.Set(target.TargetId, result.CounterAttackBounty);
-                gameEngine.State.Status.Set(NewMasterTextKeys.RaidDetailed, result.Loot, result.DefenseMitigationPercent, result.VillageDamage);
+                gameEngine.State.Status.Set(
+                    NewMasterTextKeys.RaidDetailed,
+                    result.Loot,
+                    result.DefenseMitigationPercent,
+                    result.VillageDamage.ToString(System.Globalization.CultureInfo.InvariantCulture));
             }
 
             var message = NewMasterLocalization.Get(gameEngine.State.Status);
