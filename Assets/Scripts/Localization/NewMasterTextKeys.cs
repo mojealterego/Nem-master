@@ -43,6 +43,7 @@ namespace NewMaster.Localization
         public const string SocialContributionRejected = "social.contribution_rejected";
         public const string SocialNoNewMilestone = "social.no_new_milestone";
         public const string SocialRewardUnavailable = "social.reward_unavailable";
+        public const string SocialMilestoneReached = "social.milestone_reached";
         public const string SocialMilestoneReward = "social.milestone_reward";
     }
 }
