@@ -85,7 +85,10 @@ namespace NewMaster.UI
                 rewardText.text = NewMasterLocalization.Get(NewMasterTextKeys.CollectionReward, collection.CompletionReward);
 
             if (completeButton != null)
-                completeButton.interactable = required > 0 && owned == required;
+                completeButton.interactable =
+                    required > 0 &&
+                    owned == required &&
+                    !gameEngine.CollectionState.HasCompleted(collection.Id);
         }
     }
 }
